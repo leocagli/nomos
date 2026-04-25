@@ -54,7 +54,7 @@ const BUILDING_ZONES: BuildingZone[] = [
     position: { top: "20%", left: "45%", width: "16%", height: "20%" },
     accentColor: "var(--pink)",
     options: [
-      { id: "inn", name: "Inn", description: "Team headquarters", href: "/teams/1" },
+      { id: "inn", name: "Inn", description: "Team headquarters", href: "/orchestrate" },
     ],
   },
   {
