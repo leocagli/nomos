@@ -124,6 +124,14 @@ export function VillageMap() {
         <NPC x={92} y={55} gnomeIndex={3} /> {/* Wizard - Far right */}
       </div>
 
+      {/* Gnome Inspector decoration near Plaza Central */}
+      <div className="gnome-inspector">
+        <img
+          src="/images/gnome-inspector.png"
+          alt="Gnome Inspector"
+        />
+      </div>
+
       {/* Floating clouds animation */}
       <div className="village-clouds" aria-hidden>
         <div className="cloud cloud-1" />
@@ -172,6 +180,24 @@ export function VillageMap() {
           position: absolute;
           inset: 0;
           z-index: 8;
+        }
+
+        .gnome-inspector {
+          position: absolute;
+          top: 52%;
+          left: 48%;
+          transform: translate(-50%, -50%);
+          width: 100px;
+          height: 100px;
+          z-index: 15;
+          pointer-events: auto;
+        }
+
+        .gnome-inspector img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
         .village-clouds {
