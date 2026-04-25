@@ -256,6 +256,11 @@ function BuildingZoneHotspot({
 
   const boardStyle = signBoardMargins[zone.id] || { marginTop: "0", marginLeft: "0" };
 
+  // Link-level CSS adjustments to reduce transparent clickable area overlap
+  const linkStyle: React.CSSProperties = zone.id === "post-office" 
+    ? { fontSize: "15px", fontWeight: 400, paddingTop: "-1px" }
+    : {};
+
   const sharedStyles = `
     /* ── Wrapper posicionado sobre el mapa ── */
     .zone-anchor {
@@ -468,6 +473,7 @@ function BuildingZoneHotspot({
         <Link
           href={singleOption.href}
           className="sign-link"
+          style={linkStyle}
           aria-label={`${singleOption.name}: ${singleOption.description}`}
         >
           <div className="sign-rope" />
