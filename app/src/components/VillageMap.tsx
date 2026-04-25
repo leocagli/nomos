@@ -32,9 +32,9 @@ const BUILDING_ZONES: BuildingZone[] = [
     position: { top: "25%", left: "5%", width: "28%", height: "55%" },
     accentColor: "var(--yerba)",
     options: [
-      { id: "mission-center", name: "Casa-Hongo Grande", description: "Mission Center", href: "/orchestrate" },
+      { id: "mission-center", name: "MISIONES", description: "Mission Center", href: "/orchestrate" },
       { id: "workshop", name: "Workshop", description: "Squad tools & forge", href: "/squads/code-forge" },
-      { id: "immigration", name: "Oficina de Inmigraciones", description: "Register & paperwork", href: "/inbox" },
+      { id: "immigration", name: "REGISTRO", description: "Register & paperwork", href: "/inbox" },
     ],
   },
   {
@@ -64,7 +64,7 @@ const BUILDING_ZONES: BuildingZone[] = [
     position: { top: "38%", left: "60%", width: "10%", height: "12%" },
     accentColor: "var(--pink)",
     options: [
-      { id: "correos", name: "Oficina de Correos", description: "Messages & notifications", href: "/inbox" },
+      { id: "correos", name: "CORREOS", description: "Messages & notifications", href: "/inbox" },
     ],
   },
   {
