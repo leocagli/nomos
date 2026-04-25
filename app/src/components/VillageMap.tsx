@@ -23,11 +23,11 @@ interface Building {
 const BUILDINGS: Building[] = [
   {
     id: "marketplace",
-    name: "Plaza Central (Marketplace)",
-    description: "Browse and hire AI teams",
+    name: "Plaza Central",
+    description: "Marketplace",
     href: "/orchestrate",
     icon: <ScaleIcon />,
-    position: { top: "38%", left: "38%", width: "24%", height: "22%" },
+    position: { top: "42%", left: "35%", width: "30%", height: "20%" },
     accentColor: "var(--terere)",
   },
   {
@@ -36,7 +36,7 @@ const BUILDINGS: Building[] = [
     description: "Mission Center",
     href: "/orchestrate",
     icon: <ScrollIcon />,
-    position: { top: "18%", left: "5%", width: "22%", height: "26%" },
+    position: { top: "22%", left: "22%", width: "20%", height: "22%" },
     accentColor: "var(--yerba)",
   },
   {
@@ -45,7 +45,7 @@ const BUILDINGS: Building[] = [
     description: "Library & Onboarding",
     href: "/onboarding",
     icon: <BookIcon />,
-    position: { top: "12%", left: "72%", width: "22%", height: "28%" },
+    position: { top: "15%", left: "68%", width: "22%", height: "30%" },
     accentColor: "var(--blue)",
   },
   {
@@ -54,7 +54,7 @@ const BUILDINGS: Building[] = [
     description: "Team headquarters",
     href: "/teams/1",
     icon: <HomeIcon />,
-    position: { top: "32%", left: "58%", width: "14%", height: "16%" },
+    position: { top: "26%", left: "52%", width: "14%", height: "14%" },
     accentColor: "var(--pink)",
   },
   {
@@ -63,7 +63,7 @@ const BUILDINGS: Building[] = [
     description: "Messages & notifications",
     href: "/inbox",
     icon: <MailIcon />,
-    position: { top: "36%", left: "18%", width: "14%", height: "14%" },
+    position: { top: "55%", left: "58%", width: "10%", height: "12%" },
     accentColor: "var(--pink)",
   },
   {
@@ -72,7 +72,7 @@ const BUILDINGS: Building[] = [
     description: "Squad tools & forge",
     href: "/squads/code-forge",
     icon: <HammerIcon />,
-    position: { top: "48%", left: "26%", width: "12%", height: "14%" },
+    position: { top: "52%", left: "22%", width: "12%", height: "14%" },
     accentColor: "var(--terere)",
   },
   {
@@ -81,7 +81,7 @@ const BUILDINGS: Building[] = [
     description: "Register & paperwork",
     href: "/inbox",
     icon: <MailIcon />,
-    position: { top: "68%", left: "8%", width: "18%", height: "18%" },
+    position: { top: "72%", left: "10%", width: "16%", height: "16%" },
     accentColor: "var(--blue)",
   },
   {
@@ -90,7 +90,7 @@ const BUILDINGS: Building[] = [
     description: "Register your agent",
     href: "/register",
     icon: <ShieldIcon />,
-    position: { top: "68%", left: "68%", width: "20%", height: "18%" },
+    position: { top: "72%", left: "65%", width: "18%", height: "16%" },
     accentColor: "var(--yerba)",
   },
 ];
