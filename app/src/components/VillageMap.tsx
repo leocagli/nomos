@@ -9,87 +9,74 @@ import { NPC } from "./NPC";
    Building definitions — each building in the village with its function
    ───────────────────────────────────────────────────────────────────────────── */
 
-interface Building {
+interface BuildingOption {
   id: string;
   name: string;
   description: string;
   href: string;
-  position: { top: string; left: string; width: string; height: string };
-  accentColor: string;
 }
 
-const BUILDINGS: Building[] = [
+interface BuildingZone {
+  id: string;
+  label: string;
+  position: { top: string; left: string; width: string; height: string };
+  accentColor: string;
+  options: BuildingOption[];
+}
+
+const BUILDING_ZONES: BuildingZone[] = [
   {
-    // Balanza en el centro de la plaza
+    // Hongo grande izquierda - agrupa 3 edificios
+    id: "left-mushroom",
+    label: "Hongo Grande",
+    position: { top: "25%", left: "5%", width: "28%", height: "55%" },
+    accentColor: "var(--yerba)",
+    options: [
+      { id: "mission-center", name: "Casa-Hongo Grande", description: "Mission Center", href: "/orchestrate" },
+      { id: "workshop", name: "Workshop", description: "Squad tools & forge", href: "/squads/code-forge" },
+      { id: "immigration", name: "Oficina Inmigratos", description: "Register & paperwork", href: "/inbox" },
+    ],
+  },
+  {
+    // Balanza central - solo marketplace
     id: "marketplace",
-    name: "Plaza Central",
-    description: "Marketplace",
-    href: "/orchestrate",
-    position: { top: "50%", left: "44%", width: "14%", height: "14%" },
+    label: "Plaza Central",
+    position: { top: "45%", left: "38%", width: "18%", height: "18%" },
     accentColor: "var(--terere)",
+    options: [
+      { id: "marketplace", name: "Plaza Central", description: "Marketplace", href: "/orchestrate" },
+    ],
   },
   {
-    // Hongo grande con puerta y ventana, izquierda
-    id: "mission-center",
-    name: "Casa-Hongo Grande",
-    description: "Mission Center",
-    href: "/orchestrate",
-    position: { top: "28%", left: "10%", width: "20%", height: "22%" },
-    accentColor: "var(--yerba)",
-  },
-  {
-    // Arbol con estantes de libros, derecha
-    id: "library",
-    name: "Arbol-Biblioteca",
-    description: "Library & Onboarding",
-    href: "/onboarding",
-    position: { top: "18%", left: "72%", width: "20%", height: "28%" },
-    accentColor: "var(--blue)",
-  },
-  {
-    // Hongo pequeno centro-derecha, detras de la plaza
-    id: "inn",
-    name: "Inn",
-    description: "Team headquarters",
-    href: "/teams/1",
-    position: { top: "22%", left: "53%", width: "12%", height: "14%" },
+    // Hongo/arbol atras - Inn solo
+    id: "back-inn",
+    label: "Inn",
+    position: { top: "20%", left: "45%", width: "16%", height: "20%" },
     accentColor: "var(--pink)",
+    options: [
+      { id: "inn", name: "Inn", description: "Team headquarters", href: "/teams/1" },
+    ],
   },
   {
-    // Baul/cofre azul a la derecha de la balanza
+    // Edificio pequeno - Correos solo
     id: "post-office",
-    name: "Oficina de Correos",
-    description: "Messages & notifications",
-    href: "/inbox",
-    position: { top: "40%", left: "63%", width: "8%", height: "10%" },
+    label: "Correos",
+    position: { top: "38%", left: "60%", width: "10%", height: "12%" },
     accentColor: "var(--pink)",
+    options: [
+      { id: "correos", name: "Oficina de Correos", description: "Messages & notifications", href: "/inbox" },
+    ],
   },
   {
-    // Cabanita con pozo, izquierda media
-    id: "workshop",
-    name: "Workshop",
-    description: "Squad tools & forge",
-    href: "/squads/code-forge",
-    position: { top: "46%", left: "22%", width: "12%", height: "12%" },
-    accentColor: "var(--terere)",
-  },
-  {
-    // Casita abajo izquierda con herramientas
-    id: "immigration",
-    name: "Oficina Inmigratos",
-    description: "Register & paperwork",
-    href: "/inbox",
-    position: { top: "65%", left: "8%", width: "16%", height: "18%" },
+    // Arbol biblioteca derecha - agrupa 2 edificios
+    id: "right-tree",
+    label: "Arbol Biblioteca",
+    position: { top: "15%", left: "70%", width: "25%", height: "45%" },
     accentColor: "var(--blue)",
-  },
-  {
-    // Estructura con puente abajo derecha
-    id: "guild-hall",
-    name: "Guild Hall",
-    description: "Register your agent",
-    href: "/register",
-    position: { top: "64%", left: "70%", width: "18%", height: "18%" },
-    accentColor: "var(--yerba)",
+    options: [
+      { id: "library", name: "Arbol-Biblioteca", description: "Library & Onboarding", href: "/onboarding" },
+      { id: "guild-hall", name: "Guild Hall", description: "Register your agent", href: "/register" },
+    ],
   },
 ];
 
@@ -98,7 +85,7 @@ const BUILDINGS: Building[] = [
    ───────────────────────────────────────────────────────────────────────────── */
 
 export function VillageMap() {
-  const [hoveredBuilding, setHoveredBuilding] = useState<string | null>(null);
+  const [activeZone, setActiveZone] = useState<string | null>(null);
 
   return (
     <div className="village-map-container">
@@ -116,15 +103,15 @@ export function VillageMap() {
         <div className="village-ambient-overlay" />
       </div>
 
-      {/* Building hotspots */}
+      {/* Building zone hotspots with dropdowns */}
       <div className="village-hotspots">
-        {BUILDINGS.map((building) => (
-          <BuildingHotspot
-            key={building.id}
-            building={building}
-            isHovered={hoveredBuilding === building.id}
-            onHover={() => setHoveredBuilding(building.id)}
-            onLeave={() => setHoveredBuilding(null)}
+        {BUILDING_ZONES.map((zone) => (
+          <BuildingZoneHotspot
+            key={zone.id}
+            zone={zone}
+            isActive={activeZone === zone.id}
+            onActivate={() => setActiveZone(activeZone === zone.id ? null : zone.id)}
+            onClose={() => setActiveZone(null)}
           />
         ))}
       </div>
@@ -239,66 +226,187 @@ export function VillageMap() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   BuildingHotspot Component
+   BuildingZoneHotspot Component - With dropdown for multiple options
    ───────────────────────────────────────────────────────────────────────────── */
 
-interface BuildingHotspotProps {
-  building: Building;
-  isHovered: boolean;
-  onHover: () => void;
-  onLeave: () => void;
+interface BuildingZoneHotspotProps {
+  zone: BuildingZone;
+  isActive: boolean;
+  onActivate: () => void;
+  onClose: () => void;
 }
 
-function BuildingHotspot({
-  building,
-  isHovered,
-  onHover,
-  onLeave,
-}: BuildingHotspotProps) {
+function BuildingZoneHotspot({
+  zone,
+  isActive,
+  onActivate,
+  onClose,
+}: BuildingZoneHotspotProps) {
+  const hasMultipleOptions = zone.options.length > 1;
+  const singleOption = zone.options[0];
+
+  // Si solo hay una opcion, es un link directo
+  if (!hasMultipleOptions) {
+    return (
+      <Link
+        href={singleOption.href}
+        className="building-zone"
+        style={{
+          position: "absolute",
+          top: zone.position.top,
+          left: zone.position.left,
+          width: zone.position.width,
+          height: zone.position.height,
+          ["--accent" as string]: zone.accentColor,
+        }}
+        aria-label={`${singleOption.name}: ${singleOption.description}`}
+      >
+        <div className="zone-glow" />
+        <div className="zone-label">
+          <span className="label-name">{singleOption.name}</span>
+          <span className="label-desc">{singleOption.description}</span>
+        </div>
+        <style jsx>{`
+          .building-zone {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 16px;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+          }
+          .building-zone:hover {
+            transform: scale(1.02);
+          }
+          .zone-glow {
+            position: absolute;
+            inset: -4px;
+            border-radius: 20px;
+            background: var(--accent);
+            opacity: 0;
+            filter: blur(16px);
+            transition: opacity 0.3s ease;
+            z-index: -1;
+          }
+          .building-zone:hover .zone-glow {
+            opacity: 0.4;
+          }
+          .zone-label {
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            padding: 6px 10px;
+            background: #2a1f0f;
+            border: 1.5px solid #6b4c1e;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 0 rgba(255,220,140,0.15), 0 3px 8px rgba(0,0,0,0.6);
+            white-space: nowrap;
+            z-index: 100;
+          }
+          .zone-label::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #8b6914;
+            border-radius: 50%;
+            border: 1px solid #4a3508;
+          }
+          .label-name {
+            font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #f0d9a0;
+          }
+          .label-desc {
+            font-size: 0.6rem;
+            color: #a08850;
+            font-style: italic;
+          }
+        `}</style>
+      </Link>
+    );
+  }
+
+  // Si hay multiples opciones, muestra dropdown
   return (
-    <Link
-      href={building.href}
-      className={`building-hotspot ${isHovered ? "hovered" : ""}`}
+    <div
+      className={`building-zone-multi ${isActive ? "active" : ""}`}
       style={{
         position: "absolute",
-        top: building.position.top,
-        left: building.position.left,
-        width: building.position.width,
-        height: building.position.height,
-        ["--accent" as string]: building.accentColor,
+        top: zone.position.top,
+        left: zone.position.left,
+        width: zone.position.width,
+        height: zone.position.height,
+        ["--accent" as string]: zone.accentColor,
       }}
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
-      onFocus={onHover}
-      onBlur={onLeave}
-      aria-label={`${building.name}: ${building.description}`}
     >
-      {/* Hover glow effect */}
-      <div className="hotspot-glow" />
+      <button
+        className="zone-trigger"
+        onClick={onActivate}
+        aria-expanded={isActive}
+        aria-label={`${zone.label} - Click to see options`}
+      >
+        <div className="zone-glow" />
+        <div className="zone-label">
+          <span className="label-name">{zone.label}</span>
+          <span className="label-desc">{zone.options.length} lugares</span>
+          <span className="label-arrow">{isActive ? "^" : "v"}</span>
+        </div>
+      </button>
 
-      {/* Always visible label */}
-      <div className={`building-label ${isHovered ? "hovered" : ""}`}>
-        <span className="label-name">{building.name}</span>
-        <span className="label-desc">{building.description}</span>
-      </div>
+      {/* Dropdown menu */}
+      {isActive && (
+        <>
+          <div className="dropdown-backdrop" onClick={onClose} />
+          <div className="dropdown-menu">
+            {zone.options.map((option) => (
+              <Link
+                key={option.id}
+                href={option.href}
+                className="dropdown-item"
+                onClick={onClose}
+              >
+                <span className="item-name">{option.name}</span>
+                <span className="item-desc">{option.description}</span>
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
 
       <style jsx>{`
-        .building-hotspot {
+        .building-zone-multi {
+          z-index: 10;
+        }
+        .building-zone-multi.active {
+          z-index: 200;
+        }
+        .zone-trigger {
+          position: absolute;
+          inset: 0;
           display: flex;
           align-items: flex-start;
           justify-content: center;
           cursor: pointer;
           border-radius: 16px;
+          background: transparent;
+          border: none;
           transition: transform 0.2s ease;
-          text-decoration: none;
         }
-
-        .building-hotspot:hover,
-        .building-hotspot.hovered {
+        .zone-trigger:hover {
           transform: scale(1.02);
         }
-
-        .hotspot-glow {
+        .zone-glow {
           position: absolute;
           inset: -4px;
           border-radius: 20px;
@@ -308,13 +416,11 @@ function BuildingHotspot({
           transition: opacity 0.3s ease;
           z-index: -1;
         }
-
-        .building-hotspot:hover .hotspot-glow,
-        .building-hotspot.hovered .hotspot-glow {
+        .zone-trigger:hover .zone-glow,
+        .building-zone-multi.active .zone-glow {
           opacity: 0.5;
         }
-
-        .building-label {
+        .zone-label {
           position: absolute;
           bottom: calc(100% + 6px);
           left: 50%;
@@ -327,25 +433,11 @@ function BuildingHotspot({
           background: #2a1f0f;
           border: 1.5px solid #6b4c1e;
           border-radius: 4px;
-          box-shadow:
-            inset 0 1px 0 rgba(255,220,140,0.15),
-            0 3px 8px rgba(0,0,0,0.6),
-            0 1px 2px rgba(0,0,0,0.4);
+          box-shadow: inset 0 1px 0 rgba(255,220,140,0.15), 0 3px 8px rgba(0,0,0,0.6);
           white-space: nowrap;
           z-index: 100;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-          /* Wooden plank look: subtle grain via background */
-          background-image: repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 3px,
-            rgba(255,255,255,0.015) 3px,
-            rgba(255,255,255,0.015) 6px
-          );
         }
-
-        /* Small notch/nail effect on top */
-        .building-label::before {
+        .zone-label::before {
           content: "";
           position: absolute;
           top: -5px;
@@ -356,33 +448,83 @@ function BuildingHotspot({
           background: #8b6914;
           border-radius: 50%;
           border: 1px solid #4a3508;
-          box-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
-
-        .building-label.hovered {
-          transform: translateX(-50%) translateY(-2px);
-          box-shadow:
-            inset 0 1px 0 rgba(255,220,140,0.2),
-            0 6px 16px rgba(0,0,0,0.7),
-            0 2px 4px rgba(0,0,0,0.5);
-        }
-
         .label-name {
           font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
           font-size: 0.7rem;
           font-weight: 700;
           color: #f0d9a0;
-          letter-spacing: 0.02em;
         }
-
         .label-desc {
           font-size: 0.6rem;
           color: #a08850;
           font-style: italic;
-          letter-spacing: 0.01em;
+        }
+        .label-arrow {
+          font-size: 0.6rem;
+          color: #f0d9a0;
+          margin-top: 2px;
+        }
+        .dropdown-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 150;
+        }
+        .dropdown-menu {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          padding: 8px;
+          background: #1f1a0f;
+          border: 2px solid #6b4c1e;
+          border-radius: 8px;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.8), 0 0 20px rgba(107,76,30,0.3);
+          z-index: 200;
+          min-width: 180px;
+          animation: dropdown-in 0.15s ease-out;
+        }
+        @keyframes dropdown-in {
+          from {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+          }
+        }
+        .dropdown-item {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          padding: 10px 12px;
+          background: #2a1f0f;
+          border: 1px solid #4a3508;
+          border-radius: 4px;
+          text-decoration: none;
+          transition: background 0.15s ease, border-color 0.15s ease;
+        }
+        .dropdown-item:hover {
+          background: #3a2f1a;
+          border-color: #8b6914;
+        }
+        .item-name {
+          font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #f0d9a0;
+        }
+        .item-desc {
+          font-size: 0.65rem;
+          color: #a08850;
+          font-style: italic;
         }
       `}</style>
-    </Link>
+    </div>
   );
 }
 
