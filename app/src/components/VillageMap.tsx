@@ -48,10 +48,10 @@ const BUILDING_ZONES: BuildingZone[] = [
     ],
   },
   {
-    // Edificio pequeno - Correos (más pequeño para no tapar Plaza Central)
+    // Edificio pequeno - Correos (posicionado directamente en esquina inferior derecha)
     id: "post-office",
     label: "Correos",
-    position: { top: "48%", left: "62%", width: "8%", height: "10%" },
+    position: { top: "78%", left: "82%", width: "14%", height: "12%" },
     accentColor: "var(--pink)",
     options: [
       { id: "correos", name: "CORREOS", description: "Messages & notifications", href: "/inbox" },
@@ -249,24 +249,14 @@ function BuildingZoneHotspot({
   const signBoardMargins: { [key: string]: { marginTop: string; marginLeft: string; paddingTop?: string } } = {
     "left-mushroom": { marginTop: "1px", marginLeft: "70px" },                        // Hongo Grande
     "marketplace": { marginTop: "115px", marginLeft: "23px" },                        // Plaza Central
-    "post-office": { marginTop: "146px", marginLeft: "587px" },                       // Correos
+    "post-office": { marginTop: "0px", marginLeft: "0px" },                             // Correos
     "back-inn": { marginTop: "-13px", marginLeft: "18px" },                           // Inn
     "right-tree": { marginTop: "-19px", marginLeft: "-93px" },                        // Arbol Biblioteca
   };
 
   const boardStyle = signBoardMargins[zone.id] || { marginTop: "0", marginLeft: "0" };
 
-  // Link-specific styles for Correos to reduce clickable area overlap
-  const linkStyle: React.CSSProperties = zone.id === "post-office" 
-    ? { 
-        width: "auto", 
-        height: "auto", 
-        marginRight: "10px", 
-        paddingLeft: "0px",
-        letterSpacing: "0.004em", 
-        lineHeight: "0.5em"
-      }
-    : {};
+
 
   const sharedStyles = `
     /* ── Wrapper posicionado sobre el mapa ── */
@@ -482,7 +472,6 @@ function BuildingZoneHotspot({
         <Link
           href={singleOption.href}
           className="sign-link"
-          style={linkStyle}
           aria-label={`${singleOption.name}: ${singleOption.description}`}
         >
           <div className="sign-rope" />
