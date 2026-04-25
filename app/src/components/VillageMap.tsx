@@ -86,6 +86,7 @@ const BUILDING_ZONES: BuildingZone[] = [
 
 export function VillageMap() {
   const [activeZone, setActiveZone] = useState<string | null>(null);
+  const [gnomeOpen, setGnomeOpen] = useState(false);
 
   return (
     <div className="village-map-container">
@@ -125,12 +126,49 @@ export function VillageMap() {
       </div>
 
       {/* Gnome Inspector decoration near Plaza Central */}
-      <div className="gnome-inspector">
+      <div className="gnome-inspector" onClick={() => setGnomeOpen(!gnomeOpen)}>
         <img
           src="/images/gnome-inspector.png"
-          alt="Gnome Inspector"
+          alt="Gnome Inspector - Click for FAQ"
+          style={{ cursor: "pointer" }}
         />
       </div>
+
+      {/* Gnome FAQ Chat Modal */}
+      {gnomeOpen && (
+        <div className="gnome-faq-overlay" onClick={() => setGnomeOpen(false)}>
+          <div className="gnome-faq-chat" onClick={(e) => e.stopPropagation()}>
+            <div className="faq-header">
+              <h3>Gnome Inspector - FAQ</h3>
+              <button 
+                className="faq-close"
+                onClick={() => setGnomeOpen(false)}
+                aria-label="Close FAQ"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="faq-content">
+              <div className="faq-item">
+                <p className="faq-question">¿Qué es NOMOS?</p>
+                <p className="faq-answer">NOMOS es una plataforma para orquestar agentes de IA y coordinar equipos.</p>
+              </div>
+              <div className="faq-item">
+                <p className="faq-question">¿Cómo empiezo?</p>
+                <p className="faq-answer">Puedes registrarte en el Árbol Biblioteca o explorar la Plaza Central.</p>
+              </div>
+              <div className="faq-item">
+                <p className="faq-question">¿Qué puedo hacer en cada zona?</p>
+                <p className="faq-answer">Hongo Grande: Misiones y Workshop. Plaza Central: Marketplace. Árbol Biblioteca: Registro y Guild Hall.</p>
+              </div>
+              <div className="faq-item">
+                <p className="faq-question">¿Necesito ayuda adicional?</p>
+                <p className="faq-answer">Explora cada edificio clickeando en sus carteles para más información.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Floating clouds animation */}
       <div className="village-clouds" aria-hidden>
@@ -198,7 +236,106 @@ export function VillageMap() {
           height: 100%;
           object-fit: contain;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-          margin-top: 97px;
+          margin-top: 96px;
+          margin-left: 104px;
+          transition: transform 0.2s ease;
+        }
+
+        .gnome-inspector:hover img {
+          transform: scale(1.1);
+        }
+
+        /* Gnome FAQ Modal */
+        .gnome-faq-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 200;
+          backdrop-filter: blur(2px);
+        }
+
+        .gnome-faq-chat {
+          background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+          border: 2px solid #5c3d11;
+          border-radius: 12px;
+          width: 90%;
+          max-width: 420px;
+          max-height: 500px;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 16px 20px;
+          border-bottom: 1px solid #5c3d11;
+          background: rgba(92, 61, 17, 0.2);
+        }
+
+        .faq-header h3 {
+          margin: 0;
+          color: #f0e6d2;
+          font-size: 18px;
+          font-weight: 600;
+          font-family: 'Geist', sans-serif;
+        }
+
+        .faq-close {
+          background: none;
+          border: none;
+          color: #f0e6d2;
+          font-size: 24px;
+          cursor: pointer;
+          padding: 0;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 6px;
+          transition: background 0.2s ease;
+        }
+
+        .faq-close:hover {
+          background: rgba(240, 230, 210, 0.1);
+        }
+
+        .faq-content {
+          overflow-y: auto;
+          padding: 16px;
+          flex: 1;
+        }
+
+        .faq-item {
+          margin-bottom: 16px;
+          padding: 12px;
+          background: rgba(92, 61, 17, 0.15);
+          border-radius: 8px;
+          border-left: 3px solid #5c3d11;
+        }
+
+        .faq-item:last-child {
+          margin-bottom: 0;
+        }
+
+        .faq-question {
+          margin: 0 0 8px 0;
+          color: #d4af37;
+          font-weight: 600;
+          font-size: 14px;
+        }
+
+        .faq-answer {
+          margin: 0;
+          color: #c9b8a3;
+          font-size: 13px;
+          line-height: 1.5;
         }
 
         .village-clouds {
