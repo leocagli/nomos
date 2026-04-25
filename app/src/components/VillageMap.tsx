@@ -48,16 +48,6 @@ const BUILDING_ZONES: BuildingZone[] = [
     ],
   },
   {
-    // Edificio pequeno - Correos
-    id: "post-office",
-    label: "Correos",
-    position: { top: "48%", left: "62%", width: "10%", height: "12%" },
-    accentColor: "var(--pink)",
-    options: [
-      { id: "correos", name: "CORREOS", description: "Messages & notifications", href: "/inbox" },
-    ],
-  },
-  {
     // Inn - al costado del hongo central
     id: "back-inn",
     label: "Inn",
@@ -227,7 +217,7 @@ export function VillageMap() {
 
 /* ─────────────────────────────────────────────────────────────────────────────
    BuildingZoneHotspot Component - With dropdown for multiple options
-   ─────����─────────────────────────────────────────────────────────────────────── */
+   ─────�����─────────────────────────────────────────────────────────────────────── */
 
 interface BuildingZoneHotspotProps {
   zone: BuildingZone;
@@ -249,17 +239,11 @@ function BuildingZoneHotspot({
   const signBoardMargins: { [key: string]: { marginTop: string; marginLeft: string; paddingTop?: string } } = {
     "left-mushroom": { marginTop: "1px", marginLeft: "70px" },                        // Hongo Grande
     "marketplace": { marginTop: "115px", marginLeft: "23px" },                        // Plaza Central
-    "post-office": { marginTop: "165px", marginLeft: "571px", paddingTop: "12px" },  // Correos
     "back-inn": { marginTop: "-13px", marginLeft: "18px" },                           // Inn
     "right-tree": { marginTop: "-19px", marginLeft: "-93px" },                        // Arbol Biblioteca
   };
 
   const boardStyle = signBoardMargins[zone.id] || { marginTop: "0", marginLeft: "0" };
-
-  // Link-level CSS adjustments to reduce transparent clickable area overlap
-  const linkStyle: React.CSSProperties = zone.id === "post-office" 
-    ? { fontSize: "15px", fontWeight: 400, paddingTop: "-1px" }
-    : {};
 
   const sharedStyles = `
     /* ── Wrapper posicionado sobre el mapa ── */
@@ -473,7 +457,6 @@ function BuildingZoneHotspot({
         <Link
           href={singleOption.href}
           className="sign-link"
-          style={linkStyle}
           aria-label={`${singleOption.name}: ${singleOption.description}`}
         >
           <div className="sign-rope" />
