@@ -284,9 +284,6 @@ function BuildingHotspot({
         <span className="label-desc">{building.description}</span>
       </div>
 
-      {/* Pulse indicator */}
-      <div className="hotspot-pulse" />
-
       <style jsx>{`
         .building-hotspot {
           display: flex;
@@ -385,39 +382,6 @@ function BuildingHotspot({
           color: #a08850;
           font-style: italic;
           letter-spacing: 0.01em;
-        }
-
-        .hotspot-pulse {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 20px;
-          height: 20px;
-          transform: translate(-50%, -50%);
-          background: var(--accent);
-          border-radius: 50%;
-          opacity: 0.6;
-          animation: pulse-ring 2.5s ease-out infinite;
-        }
-
-        .building-hotspot:hover .hotspot-pulse,
-        .building-hotspot.hovered .hotspot-pulse {
-          animation: none;
-          opacity: 0;
-        }
-
-        @keyframes pulse-ring {
-          0% {
-            transform: translate(-50%, -50%) scale(0.8);
-            opacity: 0.6;
-          }
-          50% {
-            opacity: 0.3;
-          }
-          100% {
-            transform: translate(-50%, -50%) scale(2);
-            opacity: 0;
-          }
         }
       `}</style>
     </Link>
