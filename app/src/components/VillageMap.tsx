@@ -246,42 +246,66 @@ function BuildingZoneHotspot({
   const singleOption = zone.options[0];
 
   const sharedStyles = `
-    /* ── Cartel de madera colgante ── */
-    .zone-sign {
+    /* ── Wrapper posicionado sobre el mapa ── */
+    .zone-anchor {
       position: absolute;
-      top: 6px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: zone.position.top;
+      left: zone.position.left;
+      width: zone.position.width;
+      height: zone.position.height;
       display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      min-width: 130px;
-      white-space: nowrap;
-      z-index: 100;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
-      transition: filter 0.2s ease, transform 0.2s ease;
+      align-items: flex-start;
+      justify-content: center;
+      pointer-events: none;
     }
-    /* Cuerda del cartel */
-    .zone-sign::before {
-      content: "";
-      display: block;
+
+    /* ── Cartel colgante — el cartel ES el boton ── */
+    .sign-link,
+    .sign-button {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      text-decoration: none;
+      background: none;
+      border: none;
+      padding: 0;
+      pointer-events: all;
+      transition: transform 0.15s ease;
+    }
+    .sign-link:hover,
+    .sign-button:hover {
+      transform: translateY(-2px);
+    }
+    .sign-link:active,
+    .sign-button:active {
+      transform: translateY(1px);
+    }
+
+    /* Cuerda */
+    .sign-rope {
       width: 2px;
       height: 10px;
       background: #5c3d11;
-      margin: 0 auto;
       border-radius: 1px;
     }
-    /* Tabla del cartel */
+
+    /* Tabla de madera */
     .sign-board {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 8px 14px;
       background: #3b2710;
       border: 2px solid #7a541e;
       border-radius: 5px;
-      padding: 8px 10px 8px;
       box-shadow:
         inset 0 1px 0 rgba(255,220,140,0.12),
         inset 0 -1px 0 rgba(0,0,0,0.3),
-        0 2px 0 #1a0f04;
-      /* Veta de madera */
+        0 3px 0 #1a0f04,
+        0 6px 16px rgba(0,0,0,0.6);
       background-image: repeating-linear-gradient(
         92deg,
         transparent,
@@ -289,10 +313,21 @@ function BuildingZoneHotspot({
         rgba(255,255,255,0.018) 4px,
         rgba(255,255,255,0.018) 8px
       );
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
+      white-space: nowrap;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
+    .sign-link:hover .sign-board,
+    .sign-button:hover .sign-board,
+    .zone-active .sign-board {
+      border-color: #c8953a;
+      box-shadow:
+        inset 0 1px 0 rgba(255,220,140,0.25),
+        inset 0 -1px 0 rgba(0,0,0,0.3),
+        0 3px 0 #1a0f04,
+        0 8px 24px rgba(0,0,0,0.7),
+        0 0 14px rgba(200,149,58,0.3);
+    }
+
     .sign-title {
       font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
       font-size: 0.72rem;
@@ -309,52 +344,16 @@ function BuildingZoneHotspot({
       text-align: center;
       line-height: 1.2;
     }
-    /* Flecha del dropdown */
     .sign-chevron {
       display: inline-block;
       margin-left: 5px;
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       color: #c8a55a;
       vertical-align: middle;
       transition: transform 0.2s ease;
     }
     .sign-chevron.open {
       transform: rotate(180deg);
-    }
-
-    /* ── Zona invisible clicable ── */
-    .zone-hit {
-      position: absolute;
-      inset: 0;
-      cursor: pointer;
-      border-radius: 12px;
-      background: transparent;
-      border: none;
-      transition: none;
-    }
-    .zone-glow {
-      position: absolute;
-      inset: -6px;
-      border-radius: 18px;
-      background: var(--accent);
-      opacity: 0;
-      filter: blur(18px);
-      transition: opacity 0.25s ease;
-      z-index: -1;
-      pointer-events: none;
-    }
-    .zone-hit:hover ~ .zone-sign .sign-board,
-    .zone-active .sign-board {
-      border-color: #c8953a;
-      box-shadow:
-        inset 0 1px 0 rgba(255,220,140,0.22),
-        inset 0 -1px 0 rgba(0,0,0,0.3),
-        0 2px 0 #1a0f04,
-        0 0 12px rgba(200,149,58,0.25);
-    }
-    .zone-hit:hover ~ .zone-glow,
-    .zone-active .zone-glow {
-      opacity: 0.35;
     }
 
     /* ── Dropdown panel ── */
@@ -365,70 +364,64 @@ function BuildingZoneHotspot({
     }
     .dropdown-panel {
       position: absolute;
-      top: calc(100% + 4px);
+      top: calc(100% + 2px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 300;
       display: flex;
       flex-direction: column;
-      gap: 0;
-      background: #221508;
+      background: #1c1008;
       border: 2px solid #7a541e;
       border-radius: 6px;
       overflow: hidden;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.85), 0 0 24px rgba(120,80,20,0.2);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.9), 0 0 20px rgba(120,80,20,0.15);
       animation: panel-in 0.15s ease-out;
-      min-width: 180px;
+      min-width: 190px;
     }
-    /* Header del panel */
     .panel-header {
-      padding: 8px 14px 6px;
-      background: #2e1c0a;
-      border-bottom: 1px solid #4a3010;
+      padding: 7px 14px 5px;
+      background: #2a1a08;
+      border-bottom: 1px solid #3a2410;
     }
     .panel-header-text {
       font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 700;
-      color: #9a7840;
+      color: #7a5820;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
     }
     @keyframes panel-in {
-      from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+      from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
       to   { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
-    /* Items del dropdown */
     .panel-item {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 14px;
+      padding: 11px 14px;
       text-decoration: none;
-      border-bottom: 1px solid #2e1c0a;
-      transition: background 0.12s ease;
+      border-bottom: 1px solid #2a1a08;
+      background: #221508;
+      transition: background 0.1s ease;
     }
-    .panel-item:last-child {
-      border-bottom: none;
-    }
-    .panel-item:hover {
-      background: #3a2010;
-    }
-    .panel-item-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #7a541e;
+    .panel-item:last-child { border-bottom: none; }
+    .panel-item:hover { background: #331f0d; }
+    .panel-item-bar {
+      width: 3px;
+      height: 28px;
+      border-radius: 2px;
+      background: #4a3010;
       flex-shrink: 0;
-      transition: background 0.12s ease;
+      transition: background 0.1s ease;
     }
-    .panel-item:hover .panel-item-dot {
+    .panel-item:hover .panel-item-bar {
       background: #c8953a;
     }
     .panel-item-text {
       display: flex;
       flex-direction: column;
-      gap: 1px;
+      gap: 2px;
     }
     .item-name {
       font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
@@ -439,64 +432,68 @@ function BuildingZoneHotspot({
     }
     .item-desc {
       font-size: 0.62rem;
-      color: #9a7840;
+      color: #7a5820;
+      line-height: 1.2;
     }
   `;
 
-  // Zona con UNA sola opcion: link directo
+  // Zona con UNA sola opcion: el cartel es un <Link> directo
   if (!hasMultipleOptions) {
     return (
       <div
-        className="zone-wrapper"
         style={{
           position: "absolute",
           top: zone.position.top,
           left: zone.position.left,
           width: zone.position.width,
           height: zone.position.height,
-          ["--accent" as string]: zone.accentColor,
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "center",
           zIndex: 10,
+          ["--accent" as string]: zone.accentColor,
         }}
       >
         <Link
           href={singleOption.href}
-          className="zone-hit"
+          className="sign-link"
           aria-label={`${singleOption.name}: ${singleOption.description}`}
-        />
-        <div className="zone-glow" />
-        <div className="zone-sign">
+        >
+          <div className="sign-rope" />
           <div className="sign-board">
             <span className="sign-title">{singleOption.name}</span>
             <span className="sign-sub">{singleOption.description}</span>
           </div>
-        </div>
+        </Link>
         <style jsx>{sharedStyles}</style>
       </div>
     );
   }
 
-  // Zona con MULTIPLES opciones: dropdown
+  // Zona con MULTIPLES opciones: el cartel es un <button> que abre dropdown
   return (
     <div
-      className={`zone-wrapper ${isActive ? "zone-active" : ""}`}
+      className={isActive ? "zone-active" : ""}
       style={{
         position: "absolute",
         top: zone.position.top,
         left: zone.position.left,
         width: zone.position.width,
         height: zone.position.height,
-        ["--accent" as string]: zone.accentColor,
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "center",
         zIndex: isActive ? 200 : 10,
+        ["--accent" as string]: zone.accentColor,
       }}
     >
       <button
-        className="zone-hit"
+        className="sign-button"
         onClick={onActivate}
         aria-expanded={isActive}
         aria-label={`${zone.label} - ver lugares`}
-      />
-      <div className="zone-glow" />
-      <div className="zone-sign">
+      >
+        <div className="sign-rope" />
         <div className="sign-board">
           <span className="sign-title">
             {zone.label}
@@ -507,7 +504,7 @@ function BuildingZoneHotspot({
 
         {isActive && (
           <>
-            <div className="dropdown-backdrop" onClick={onClose} />
+            <div className="dropdown-backdrop" onClick={(e) => { e.stopPropagation(); onClose(); }} />
             <div className="dropdown-panel">
               <div className="panel-header">
                 <span className="panel-header-text">{zone.label}</span>
@@ -519,7 +516,7 @@ function BuildingZoneHotspot({
                   className="panel-item"
                   onClick={onClose}
                 >
-                  <div className="panel-item-dot" />
+                  <div className="panel-item-bar" />
                   <div className="panel-item-text">
                     <span className="item-name">{option.name}</span>
                     <span className="item-desc">{option.description}</span>
@@ -529,7 +526,7 @@ function BuildingZoneHotspot({
             </div>
           </>
         )}
-      </div>
+      </button>
 
       <style jsx>{sharedStyles}</style>
     </div>
