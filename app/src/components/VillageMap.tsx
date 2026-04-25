@@ -29,7 +29,7 @@ const BUILDING_ZONES: BuildingZone[] = [
     // Hongo grande izquierda - agrupa 3 edificios
     id: "left-mushroom",
     label: "Hongo Grande",
-    position: { top: "18%", left: "3%", width: "30%", height: "55%" },
+    position: { top: "12%", left: "8%", width: "22%", height: "16%" },
     accentColor: "var(--yerba)",
     options: [
       { id: "mission-center", name: "MISIONES", description: "Mission Center", href: "/orchestrate" },
@@ -41,7 +41,7 @@ const BUILDING_ZONES: BuildingZone[] = [
     // Balanza central
     id: "marketplace",
     label: "Plaza Central",
-    position: { top: "50%", left: "36%", width: "20%", height: "16%" },
+    position: { top: "52%", left: "42%", width: "16%", height: "14%" },
     accentColor: "var(--terere)",
     options: [
       { id: "marketplace", name: "Plaza Central", description: "Marketplace", href: "/orchestrate" },
@@ -51,7 +51,7 @@ const BUILDING_ZONES: BuildingZone[] = [
     // Edificio pequeno - Correos
     id: "post-office",
     label: "Correos",
-    position: { top: "35%", left: "57%", width: "12%", height: "14%" },
+    position: { top: "48%", left: "62%", width: "10%", height: "12%" },
     accentColor: "var(--pink)",
     options: [
       { id: "correos", name: "CORREOS", description: "Messages & notifications", href: "/inbox" },
@@ -61,7 +61,7 @@ const BUILDING_ZONES: BuildingZone[] = [
     // Inn - al costado del hongo central
     id: "back-inn",
     label: "Inn",
-    position: { top: "28%", left: "53%", width: "14%", height: "16%" },
+    position: { top: "22%", left: "50%", width: "12%", height: "14%" },
     accentColor: "var(--pink)",
     options: [
       { id: "inn", name: "Inn", description: "Team headquarters", href: "/orchestrate" },
@@ -71,7 +71,7 @@ const BUILDING_ZONES: BuildingZone[] = [
     // Arbol biblioteca derecha - agrupa 2 edificios
     id: "right-tree",
     label: "Arbol Biblioteca",
-    position: { top: "10%", left: "68%", width: "28%", height: "50%" },
+    position: { top: "14%", left: "76%", width: "20%", height: "18%" },
     accentColor: "var(--blue)",
     options: [
       { id: "library", name: "Arbol-Biblioteca", description: "Library & Onboarding", href: "/onboarding" },
