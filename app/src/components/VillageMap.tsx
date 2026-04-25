@@ -296,6 +296,7 @@ function BuildingZoneHotspot({
       padding: 0;
       pointer-events: all;
       transition: transform 0.15s ease;
+      width: fit-content;
     }
     .sign-link:hover,
     .sign-button:hover {
@@ -312,6 +313,7 @@ function BuildingZoneHotspot({
       height: 10px;
       background: #5c3d11;
       border-radius: 1px;
+      pointer-events: none;
     }
 
     /* Tabla de madera */
