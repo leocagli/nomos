@@ -364,7 +364,7 @@ function BuildingZoneHotspot({
     }
     .dropdown-panel {
       position: absolute;
-      bottom: calc(100% + 6px);
+      top: calc(100% + 6px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 300;
@@ -374,7 +374,7 @@ function BuildingZoneHotspot({
       border: 2px solid #7a541e;
       border-radius: 6px;
       overflow: hidden;
-      box-shadow: 0 -4px 24px rgba(0,0,0,0.7), 0 12px 40px rgba(0,0,0,0.9), 0 0 20px rgba(120,80,20,0.15);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.9), 0 0 20px rgba(120,80,20,0.15);
       animation: panel-in 0.15s ease-out;
       min-width: 190px;
     }
@@ -392,7 +392,7 @@ function BuildingZoneHotspot({
       letter-spacing: 0.14em;
     }
     @keyframes panel-in {
-      from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+      from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
       to   { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
     .panel-item {
