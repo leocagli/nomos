@@ -14,8 +14,6 @@ interface Building {
   name: string;
   description: string;
   href: string;
-  icon: React.ReactNode;
-  // Position as percentages of the image dimensions
   position: { top: string; left: string; width: string; height: string };
   accentColor: string;
 }
@@ -26,8 +24,7 @@ const BUILDINGS: Building[] = [
     name: "Plaza Central",
     description: "Marketplace",
     href: "/orchestrate",
-    icon: <ScaleIcon />,
-    position: { top: "42%", left: "35%", width: "30%", height: "20%" },
+    position: { top: "38%", left: "40%", width: "20%", height: "18%" },
     accentColor: "var(--terere)",
   },
   {
@@ -35,8 +32,7 @@ const BUILDINGS: Building[] = [
     name: "Casa-Hongo Grande",
     description: "Mission Center",
     href: "/orchestrate",
-    icon: <ScrollIcon />,
-    position: { top: "22%", left: "22%", width: "20%", height: "22%" },
+    position: { top: "18%", left: "18%", width: "22%", height: "26%" },
     accentColor: "var(--yerba)",
   },
   {
@@ -44,8 +40,7 @@ const BUILDINGS: Building[] = [
     name: "Arbol-Biblioteca",
     description: "Library & Onboarding",
     href: "/onboarding",
-    icon: <BookIcon />,
-    position: { top: "15%", left: "68%", width: "22%", height: "30%" },
+    position: { top: "12%", left: "70%", width: "22%", height: "32%" },
     accentColor: "var(--blue)",
   },
   {
@@ -53,8 +48,7 @@ const BUILDINGS: Building[] = [
     name: "Inn",
     description: "Team headquarters",
     href: "/teams/1",
-    icon: <HomeIcon />,
-    position: { top: "26%", left: "52%", width: "14%", height: "14%" },
+    position: { top: "24%", left: "50%", width: "14%", height: "14%" },
     accentColor: "var(--pink)",
   },
   {
@@ -62,8 +56,7 @@ const BUILDINGS: Building[] = [
     name: "Oficina de Correos",
     description: "Messages & notifications",
     href: "/inbox",
-    icon: <MailIcon />,
-    position: { top: "55%", left: "58%", width: "10%", height: "12%" },
+    position: { top: "38%", left: "62%", width: "8%", height: "10%" },
     accentColor: "var(--pink)",
   },
   {
@@ -71,8 +64,7 @@ const BUILDINGS: Building[] = [
     name: "Workshop",
     description: "Squad tools & forge",
     href: "/squads/code-forge",
-    icon: <HammerIcon />,
-    position: { top: "52%", left: "22%", width: "12%", height: "14%" },
+    position: { top: "50%", left: "18%", width: "14%", height: "14%" },
     accentColor: "var(--terere)",
   },
   {
@@ -80,8 +72,7 @@ const BUILDINGS: Building[] = [
     name: "Oficina Inmigratos",
     description: "Register & paperwork",
     href: "/inbox",
-    icon: <MailIcon />,
-    position: { top: "72%", left: "10%", width: "16%", height: "16%" },
+    position: { top: "70%", left: "8%", width: "18%", height: "18%" },
     accentColor: "var(--blue)",
   },
   {
@@ -89,8 +80,7 @@ const BUILDINGS: Building[] = [
     name: "Guild Hall",
     description: "Register your agent",
     href: "/register",
-    icon: <ShieldIcon />,
-    position: { top: "72%", left: "65%", width: "18%", height: "16%" },
+    position: { top: "68%", left: "68%", width: "20%", height: "18%" },
     accentColor: "var(--yerba)",
   },
 ];
@@ -505,74 +495,4 @@ function VillageHUD() {
   );
 }
 
-/* ───────────────────────────────────────────────���─────────────────────────────
-   Icon Components
-   ──────────���────────────────────────────────────────────────────────────────── */
 
-function ScaleIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 3v18" />
-      <path d="M4 7l4 6h8l4-6" />
-      <path d="M4 7l4-4h8l4 4" />
-      <circle cx="4" cy="13" r="2" />
-      <circle cx="20" cy="13" r="2" />
-    </svg>
-  );
-}
-
-function ScrollIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4" />
-      <path d="M19 17V5a2 2 0 0 0-2-2H4" />
-    </svg>
-  );
-}
-
-function BookIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-      <path d="M8 7h6" />
-      <path d="M8 11h8" />
-    </svg>
-  );
-}
-
-function MailIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect width="20" height="16" x="2" y="4" rx="2" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
-  );
-}
-
-function ShieldIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
-}
-
-function HammerIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9" />
-      <path d="M17.64 15 22 10.64" />
-      <path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91" />
-    </svg>
-  );
-}
-
-function HomeIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-      <polyline points="9 22 9 12 15 12 15 22" />
-    </svg>
-  );
-}
