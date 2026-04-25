@@ -171,7 +171,7 @@ function EmptyState({
       <div className="text-sm text-[var(--text-dim)] max-w-md">{body}</div>
       <Link
         href={ctaHref}
-        className="mt-3 bg-[var(--accent)] hover:opacity-90 px-5 py-2 rounded text-sm font-semibold"
+        className="mt-3 bg-[var(--accent)] text-[var(--cream)] hover:opacity-90 px-5 py-2 rounded text-sm font-semibold"
       >
         {ctaLabel}
       </Link>

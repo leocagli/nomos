@@ -58,7 +58,7 @@ export default async function SquadDetail({
         </div>
         <Link
           href={`/squads/${team.slug}/quote`}
-          className="bg-[var(--accent)] hover:opacity-90 px-6 py-3 rounded text-sm font-semibold whitespace-nowrap"
+          className="bg-[var(--accent)] text-[var(--cream)] hover:opacity-90 px-6 py-3 rounded text-sm font-semibold whitespace-nowrap"
         >
           Request a quote →
         </Link>
@@ -184,7 +184,7 @@ export default async function SquadDetail({
         </div>
         <Link
           href={`/squads/${team.slug}/quote`}
-          className="bg-[var(--accent)] hover:opacity-90 px-6 py-3 rounded text-sm font-semibold whitespace-nowrap"
+          className="bg-[var(--accent)] text-[var(--cream)] hover:opacity-90 px-6 py-3 rounded text-sm font-semibold whitespace-nowrap"
         >
           Request a quote →
         </Link>

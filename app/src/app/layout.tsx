@@ -63,7 +63,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body>
         <Nav />
         <main className="max-w-6xl mx-auto px-6 py-10">{children}</main>
@@ -74,16 +74,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>© 2026</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              <span
+              <a
+                href="https://testnet.arcscan.app/"
+                target="_blank"
+                rel="noreferrer noopener"
                 style={{
-                  fontSize: "0.6875rem", color: "var(--text-muted)",
+                  fontSize: "0.6875rem", color: "var(--ink)",
                   fontFamily: "JetBrains Mono, monospace",
-                  background: "var(--bg-elev2)", border: "1px solid var(--border)",
-                  padding: "3px 10px", borderRadius: "6px",
+                  background: "var(--blue-soft, #E0EBFF)",
+                  border: "1.5px solid var(--ink)",
+                  padding: "3px 10px", borderRadius: "999px",
+                  textDecoration: "none",
+                  fontWeight: 600,
                 }}
+                title="Nanopayments settle in USDC on Arc testnet via Circle Gateway"
               >
-                Sepolia testnet
-              </span>
+                ◆ Arc testnet · USDC
+              </a>
               <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
                 Haiku · Sonnet · Opus
               </span>

@@ -228,10 +228,10 @@ export default async function AgentDetail({ params }: { params: Promise<{ id: st
 
       {/* Rate reference */}
       <div style={{ fontSize: "0.6875rem", color: "var(--text-muted)", borderTop: "1px solid var(--border)", paddingTop: "16px", fontFamily: "JetBrains Mono, monospace", lineHeight: 1.8 }}>
-        Base rates —{" "}
-        <span style={{ color: "var(--tier-haiku)" }}>Haiku {MODEL_RATES.haiku.toFixed(8)} ETH/token</span> ·{" "}
-        <span style={{ color: "var(--tier-sonnet)" }}>Sonnet {MODEL_RATES.sonnet.toFixed(8)} ETH/token</span> ·{" "}
-        <span style={{ color: "var(--tier-opus)" }}>Opus {MODEL_RATES.opus.toFixed(8)} ETH/token</span>
+        Base rates per 1k tokens (settled in USDC on Arc) —{" "}
+        <span style={{ color: "var(--tier-haiku)" }}>Haiku {ethToUsdc(MODEL_RATES.haiku * 1000)} USDC</span> ·{" "}
+        <span style={{ color: "var(--tier-sonnet)" }}>Sonnet {ethToUsdc(MODEL_RATES.sonnet * 1000)} USDC</span> ·{" "}
+        <span style={{ color: "var(--tier-opus)" }}>Opus {ethToUsdc(MODEL_RATES.opus * 1000)} USDC</span>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Team } from "@/lib/types";
+import { ethToUsdc } from "@/lib/pricing";
 
 type NavigatorRecommendation = {
   title: string;
@@ -79,7 +80,7 @@ export function TeamNavigator({ teams }: { teams: Team[] }) {
               <div style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--text)" }}>{team.name}</div>
               <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{team.tagline}</div>
               <div style={{ fontSize: "0.6875rem", color: "var(--text-dim)", fontFamily: "monospace" }}>
-                {team.member_ids.length} agents · {team.avg_savings_pct.toFixed(1)}% avg savings · {team.rent_price_eth_per_task.toFixed(4)} ETH/task
+                {team.member_ids.length} agents · {team.avg_savings_pct.toFixed(1)}% avg savings · {ethToUsdc(team.rent_price_eth_per_task)} USDC/task
               </div>
             </div>
 

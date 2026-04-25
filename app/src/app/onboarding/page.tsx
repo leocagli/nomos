@@ -337,7 +337,7 @@ export default function OnboardingPage() {
             </div>
             <Link
               href="/"
-              className="bg-[var(--accent)] hover:opacity-90 px-6 py-3 rounded text-sm font-semibold"
+              className="bg-[var(--accent)] text-[var(--cream)] hover:opacity-90 px-6 py-3 rounded text-sm font-semibold"
             >
               Browse squads →
             </Link>
@@ -357,7 +357,7 @@ export default function OnboardingPage() {
           <button
             onClick={() => setStep((s) => (s < 5 ? ((s + 1) as Step) : s))}
             disabled={!canAdvance()}
-            className="bg-[var(--accent)] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed px-6 py-2 rounded text-sm font-semibold"
+            className="bg-[var(--accent)] text-[var(--cream)] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed px-6 py-2 rounded text-sm font-semibold"
           >
             Continue →
           </button>

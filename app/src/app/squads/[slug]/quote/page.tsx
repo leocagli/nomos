@@ -197,7 +197,7 @@ function QuoteInner() {
         <button
           type="submit"
           disabled={submitting || !description.trim() || !volume.trim()}
-          className="bg-[var(--accent)] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed px-6 py-3 rounded text-sm font-semibold self-start"
+          className="bg-[var(--accent)] text-[var(--cream)] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed px-6 py-3 rounded text-sm font-semibold self-start"
         >
           {submitting ? "Sending..." : "Send quote request →"}
         </button>
