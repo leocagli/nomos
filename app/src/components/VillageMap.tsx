@@ -23,66 +23,75 @@ interface Building {
 const BUILDINGS: Building[] = [
   {
     id: "marketplace",
-    name: "Marketplace",
-    description: "Browse and hire AI teams for your tasks",
+    name: "Plaza Central (Marketplace)",
+    description: "Browse and hire AI teams",
     href: "/orchestrate",
     icon: <ScaleIcon />,
-    position: { top: "48%", left: "42%", width: "16%", height: "18%" },
+    position: { top: "38%", left: "38%", width: "24%", height: "22%" },
     accentColor: "var(--terere)",
   },
   {
     id: "mission-center",
-    name: "Mission Center",
-    description: "Create and manage your AI missions",
+    name: "Casa-Hongo Grande",
+    description: "Mission Center",
     href: "/orchestrate",
     icon: <ScrollIcon />,
-    position: { top: "28%", left: "8%", width: "18%", height: "28%" },
+    position: { top: "18%", left: "5%", width: "22%", height: "26%" },
     accentColor: "var(--yerba)",
   },
   {
     id: "library",
-    name: "The Library",
-    description: "Learn how to work with AI teams",
+    name: "Arbol-Biblioteca",
+    description: "Library & Onboarding",
     href: "/onboarding",
     icon: <BookIcon />,
-    position: { top: "28%", left: "74%", width: "18%", height: "28%" },
+    position: { top: "12%", left: "72%", width: "22%", height: "28%" },
     accentColor: "var(--blue)",
   },
   {
+    id: "inn",
+    name: "Inn",
+    description: "Team headquarters",
+    href: "/teams/1",
+    icon: <HomeIcon />,
+    position: { top: "32%", left: "58%", width: "14%", height: "16%" },
+    accentColor: "var(--pink)",
+  },
+  {
     id: "post-office",
-    name: "Post Office",
-    description: "Check your messages and notifications",
+    name: "Oficina de Correos",
+    description: "Messages & notifications",
     href: "/inbox",
     icon: <MailIcon />,
-    position: { top: "48%", left: "28%", width: "12%", height: "16%" },
+    position: { top: "36%", left: "18%", width: "14%", height: "14%" },
     accentColor: "var(--pink)",
+  },
+  {
+    id: "workshop",
+    name: "Workshop",
+    description: "Squad tools & forge",
+    href: "/squads/code-forge",
+    icon: <HammerIcon />,
+    position: { top: "48%", left: "26%", width: "12%", height: "14%" },
+    accentColor: "var(--terere)",
+  },
+  {
+    id: "immigration",
+    name: "Oficina Inmigratos",
+    description: "Register & paperwork",
+    href: "/inbox",
+    icon: <MailIcon />,
+    position: { top: "68%", left: "8%", width: "18%", height: "18%" },
+    accentColor: "var(--blue)",
   },
   {
     id: "guild-hall",
     name: "Guild Hall",
-    description: "Register your agent to join a squad",
+    description: "Register your agent",
     href: "/register",
     icon: <ShieldIcon />,
-    position: { top: "48%", left: "60%", width: "12%", height: "16%" },
+    position: { top: "68%", left: "68%", width: "20%", height: "18%" },
     accentColor: "var(--yerba)",
-  },
-  {
-    id: "workshop",
-    name: "The Workshop",
-    description: "Build and customize your AI tools",
-    href: "/squads/code-forge",
-    icon: <HammerIcon />,
-    position: { top: "72%", left: "8%", width: "14%", height: "18%" },
-    accentColor: "var(--terere)",
-  },
-  {
-    id: "inn",
-    name: "The Inn",
-    description: "Rest area for your AI workers",
-    href: "/teams/1",
-    icon: <HomeIcon />,
-    position: { top: "72%", left: "78%", width: "14%", height: "18%" },
-    accentColor: "var(--pink)",
   },
 ];
 
@@ -124,10 +133,10 @@ export function VillageMap() {
 
       {/* NPCs scattered around the village */}
       <div className="village-npcs">
-        <NPC x={15} y={25} gnomeIndex={0} /> {/* Gardener - Left side */}
-        <NPC x={85} y={30} gnomeIndex={1} /> {/* Warrior - Right side */}
-        <NPC x={25} y={65} gnomeIndex={2} /> {/* Chef - Bottom left */}
-        <NPC x={75} y={70} gnomeIndex={3} /> {/* Wizard - Bottom right */}
+        <NPC x={3} y={50} gnomeIndex={0} /> {/* Gardener - Far left path */}
+        <NPC x={50} y={62} gnomeIndex={1} /> {/* Warrior - Center bottom */}
+        <NPC x={32} y={72} gnomeIndex={2} /> {/* Chef - Bottom path */}
+        <NPC x={92} y={55} gnomeIndex={3} /> {/* Wizard - Far right */}
       </div>
 
       {/* Floating clouds animation */}
@@ -269,14 +278,10 @@ function BuildingHotspot({
       {/* Hover glow effect */}
       <div className="hotspot-glow" />
 
-      {/* Tooltip */}
-      <div className={`building-tooltip ${isHovered ? "visible" : ""}`}>
-        <div className="tooltip-icon">{building.icon}</div>
-        <div className="tooltip-content">
-          <span className="tooltip-name">{building.name}</span>
-          <span className="tooltip-desc">{building.description}</span>
-        </div>
-        <div className="tooltip-arrow" />
+      {/* Always visible label */}
+      <div className={`building-label ${isHovered ? "hovered" : ""}`}>
+        <span className="label-name">{building.name}</span>
+        <span className="label-route">-&gt; {building.href}</span>
       </div>
 
       {/* Pulse indicator */}
@@ -311,76 +316,45 @@ function BuildingHotspot({
 
         .building-hotspot:hover .hotspot-glow,
         .building-hotspot.hovered .hotspot-glow {
-          opacity: 0.4;
+          opacity: 0.5;
         }
 
-        .building-tooltip {
+        .building-label {
           position: absolute;
-          bottom: calc(100% + 12px);
+          top: 50%;
           left: 50%;
-          transform: translateX(-50%) translateY(8px);
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 12px 16px;
-          background: var(--cream);
-          border: 2px solid var(--ink);
-          border-radius: 14px;
-          box-shadow: var(--shadow-neo);
-          opacity: 0;
-          visibility: hidden;
-          transition: all 0.2s ease;
-          white-space: nowrap;
-          z-index: 100;
-        }
-
-        .building-tooltip.visible {
-          opacity: 1;
-          visibility: visible;
-          transform: translateX(-50%) translateY(0);
-        }
-
-        .tooltip-icon {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 36px;
-          height: 36px;
-          background: var(--accent);
-          border: 2px solid var(--ink);
-          border-radius: 10px;
-          color: var(--cream);
-          flex-shrink: 0;
-        }
-
-        .tooltip-content {
+          transform: translate(-50%, -50%);
           display: flex;
           flex-direction: column;
+          align-items: center;
           gap: 2px;
+          padding: 8px 12px;
+          background: rgba(31, 31, 30, 0.9);
+          border: 2px solid var(--accent);
+          border-radius: 8px;
+          box-shadow: 0 0 12px var(--accent), 0 4px 8px rgba(0, 0, 0, 0.4);
+          white-space: nowrap;
+          z-index: 100;
+          transition: all 0.2s ease;
         }
 
-        .tooltip-name {
+        .building-label.hovered {
+          transform: translate(-50%, -50%) scale(1.1);
+          box-shadow: 0 0 20px var(--accent), 0 6px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .label-name {
           font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
-          font-size: 1rem;
-          font-weight: 600;
-          color: var(--ink);
-        }
-
-        .tooltip-desc {
           font-size: 0.75rem;
-          color: var(--text-dim);
+          font-weight: 600;
+          color: var(--cream);
         }
 
-        .tooltip-arrow {
-          position: absolute;
-          bottom: -8px;
-          left: 50%;
-          transform: translateX(-50%) rotate(45deg);
-          width: 12px;
-          height: 12px;
-          background: var(--cream);
-          border-right: 2px solid var(--ink);
-          border-bottom: 2px solid var(--ink);
+        .label-route {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.65rem;
+          color: var(--accent);
+          opacity: 0.9;
         }
 
         .hotspot-pulse {
@@ -537,7 +511,7 @@ function VillageHUD() {
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
+/* ───────────────────────────────────────────────���─────────────────────────────
    Icon Components
    ──────────���────────────────────────────────────────────────────────────────── */
 
