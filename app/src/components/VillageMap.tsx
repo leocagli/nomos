@@ -249,8 +249,8 @@ function BuildingZoneHotspot({
   const signBoardMargins: { [key: string]: { marginTop: string; marginLeft: string; paddingTop?: string } } = {
     "left-mushroom": { marginTop: "1px", marginLeft: "70px" },                        // Hongo Grande
     "marketplace": { marginTop: "115px", marginLeft: "23px" },                        // Plaza Central
-    "post-office": { marginTop: "0px", marginLeft: "0px" },                             // Correos
-    "back-inn": { marginTop: "-13px", marginLeft: "18px" },                           // Inn
+    "post-office": { marginTop: "-12px", marginLeft: "78px" },                         // Correos
+    "back-inn": { marginTop: "-17px", marginLeft: "2px" },                             // Inn
     "right-tree": { marginTop: "-19px", marginLeft: "-93px" },                        // Arbol Biblioteca
   };
 
