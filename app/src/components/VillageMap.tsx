@@ -249,12 +249,17 @@ function BuildingZoneHotspot({
   const signBoardMargins: { [key: string]: { marginTop: string; marginLeft: string; paddingTop?: string } } = {
     "left-mushroom": { marginTop: "1px", marginLeft: "70px" },                        // Hongo Grande
     "marketplace": { marginTop: "115px", marginLeft: "23px" },                        // Plaza Central
-    "post-office": { marginTop: "5px", marginLeft: "-40px" },                         // Correos (reducido)
+    "post-office": { marginTop: "146px", marginLeft: "587px" },                       // Correos
     "back-inn": { marginTop: "-13px", marginLeft: "18px" },                           // Inn
     "right-tree": { marginTop: "-19px", marginLeft: "-93px" },                        // Arbol Biblioteca
   };
 
   const boardStyle = signBoardMargins[zone.id] || { marginTop: "0", marginLeft: "0" };
+
+  // Link-specific styles for Correos to reduce clickable area overlap
+  const linkStyle: React.CSSProperties = zone.id === "post-office" 
+    ? { marginRight: "10px", paddingLeft: "-3px", borderWidth: "2px", letterSpacing: "0.004em", lineHeight: "0.5em" }
+    : {};
 
   const sharedStyles = `
     /* ── Wrapper posicionado sobre el mapa ── */
@@ -468,6 +473,7 @@ function BuildingZoneHotspot({
         <Link
           href={singleOption.href}
           className="sign-link"
+          style={linkStyle}
           aria-label={`${singleOption.name}: ${singleOption.description}`}
         >
           <div className="sign-rope" />
