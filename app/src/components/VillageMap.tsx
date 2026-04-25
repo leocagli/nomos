@@ -126,13 +126,10 @@ export function VillageMap() {
 
       {/* Decorative gnome in top left corner */}
       <div className="village-gnome">
-        <Image
+        <img
           src="/images/gnome.png"
           alt="Decorative gnome"
-          width={150}
-          height={150}
-          style={{ objectFit: "contain", width: "100%", height: "100%" }}
-          priority
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
         />
       </div>
 
