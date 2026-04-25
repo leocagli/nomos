@@ -48,6 +48,16 @@ const BUILDING_ZONES: BuildingZone[] = [
     ],
   },
   {
+    // Edificio pequeno - Correos (más pequeño para no tapar Plaza Central)
+    id: "post-office",
+    label: "Correos",
+    position: { top: "48%", left: "62%", width: "8%", height: "10%" },
+    accentColor: "var(--pink)",
+    options: [
+      { id: "correos", name: "CORREOS", description: "Messages & notifications", href: "/inbox" },
+    ],
+  },
+  {
     // Inn - al costado del hongo central
     id: "back-inn",
     label: "Inn",
@@ -239,6 +249,7 @@ function BuildingZoneHotspot({
   const signBoardMargins: { [key: string]: { marginTop: string; marginLeft: string; paddingTop?: string } } = {
     "left-mushroom": { marginTop: "1px", marginLeft: "70px" },                        // Hongo Grande
     "marketplace": { marginTop: "115px", marginLeft: "23px" },                        // Plaza Central
+    "post-office": { marginTop: "5px", marginLeft: "-40px" },                         // Correos (reducido)
     "back-inn": { marginTop: "-13px", marginLeft: "18px" },                           // Inn
     "right-tree": { marginTop: "-19px", marginLeft: "-93px" },                        // Arbol Biblioteca
   };
