@@ -76,3 +76,25 @@ export function ethToUsdc(eth: number): string {
   if (usdc < 1) return usdc.toFixed(3);
   return usdc.toFixed(2);
 }
+
+/**
+ * Format a USDC amount with the right precision for nanopayments. Sub-cent
+ * values get 4 decimals, sub-dollar 3, dollar+ 2.
+ */
+export function formatUsdc(usdc: number): string {
+  if (usdc < 0.01) return usdc.toFixed(4);
+  if (usdc < 1) return usdc.toFixed(3);
+  return usdc.toFixed(2);
+}
+
+/**
+ * Aggregate the run's nanopayment spend (settled USDC on Arc).
+ * Failed nanopayments do NOT count toward settled total.
+ */
+export function sumSettledUsdc(payments: { cost_usdc: number; status: string }[]): number {
+  let total = 0;
+  for (const p of payments) {
+    if (p.status === "settled" || p.status === "mocked") total += p.cost_usdc;
+  }
+  return Number(total.toFixed(6));
+}

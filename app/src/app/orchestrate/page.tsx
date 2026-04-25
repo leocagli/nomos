@@ -5,9 +5,16 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ExecutionStepper } from "@/components/ExecutionStepper";
 import { SavingsPanel } from "@/components/SavingsPanel";
+import { NanopaymentsPanel } from "@/components/NanopaymentsPanel";
 import { TaskRow } from "@/components/TaskRow";
 import { TeamHeader } from "@/components/TeamHeader";
-import type { Agent, OrchestrationEvent, SubTask, Team } from "@/lib/types";
+import type { Agent, NanoPayment, OrchestrationEvent, SubTask, Team } from "@/lib/types";
+
+interface ArcWalletInfo {
+  address: string;
+  usdc_wallet: number;
+  network: string;
+}
 
 const DEFAULT_GOAL =
   "Launch a new SaaS product: design the pricing tier architecture, write the landing page headline and hero copy, and format a 5-question FAQ section from these raw notes: 'How much? Monthly. Cancel anytime. Who owns data? Customer does. Refunds? 30-day. Enterprise? Yes.'";
@@ -56,6 +63,10 @@ function OrchestrateInner() {
   const [finished, setFinished] = useState(false);
   const [totals, setTotals] = useState({ naive: 0, actual: 0, savedPct: 0 });
   const [error, setError] = useState<string | null>(null);
+  const [payments, setPayments] = useState<NanoPayment[]>([]);
+  const [usdcSettled, setUsdcSettled] = useState(0);
+  const [arcWallet, setArcWallet] = useState<ArcWalletInfo | null>(null);
+  const [arcMock, setArcMock] = useState(false);
 
   useEffect(() => {
     if (goalParam?.trim()) {
@@ -81,6 +92,20 @@ function OrchestrateInner() {
     }
   }, [teamId]);
 
+  useEffect(() => {
+    fetch("/api/arc/balance")
+      .then((r) => r.json())
+      .then((j) => {
+        if (j?.success) {
+          setArcWallet(j.data?.wallet ?? null);
+          setArcMock(Boolean(j.data?.mock));
+        }
+      })
+      .catch(() => {
+        /* keep panel hidden if endpoint isn't reachable */
+      });
+  }, []);
+
   const agentsById = useMemo(
     () => new Map(agents.map((a) => [a.id, a])),
     [agents],
@@ -89,6 +114,8 @@ function OrchestrateInner() {
   async function run() {
     setSubtasks([]);
     setTotals({ naive: 0, actual: 0, savedPct: 0 });
+    setPayments([]);
+    setUsdcSettled(0);
     setRunning(true);
     setFinished(false);
     setError(null);
@@ -133,12 +160,15 @@ function OrchestrateInner() {
         const json = line.replace(/^data:\s*/, "");
         const ev = JSON.parse(json) as OrchestrationEvent;
         setSubtasks((prev) => applyEvent(prev, ev));
-        if (ev.type === "run_completed") {
+        if (ev.type === "tool_payment") {
+          setPayments((prev) => [...prev, ev.payment]);
+        } else if (ev.type === "run_completed") {
           setTotals({
             naive: ev.total_naive_eth,
             actual: ev.total_actual_eth,
             savedPct: ev.saved_pct,
           });
+          setUsdcSettled(ev.total_usdc_settled);
           setFinished(true);
         } else if (ev.type === "error") {
           setError(ev.message);
@@ -421,6 +451,16 @@ function OrchestrateInner() {
         />
       )}
 
+      {(running || payments.length > 0) && (
+        <NanopaymentsPanel
+          payments={payments}
+          totalUsdc={usdcSettled}
+          live={running && !finished}
+          walletAddress={arcWallet?.address ?? null}
+          mockMode={arcMock}
+        />
+      )}
+
       {subtasks.length > 0 && (
         <TeamHeader subtasks={subtasks} agentsById={agentsById} />
       )}
@@ -458,6 +498,19 @@ function applyEvent(prev: SubTask[], ev: OrchestrationEvent): SubTask[] {
       return prev.map((st) =>
         st.id === ev.subtask_id ? { ...st, status: "working" } : st,
       );
+    case "tool_selected":
+      return prev.map((st) =>
+        st.id === ev.subtask_id ? { ...st, tool_used: ev.tool } : st,
+      );
+    case "tool_payment":
+      return prev.map((st) =>
+        st.id === ev.subtask_id
+          ? {
+              ...st,
+              nanopayments: [...(st.nanopayments ?? []), ev.payment],
+            }
+          : st,
+      );
     case "task_completed":
       return prev.map((st) =>
         st.id === ev.subtask_id
@@ -467,6 +520,7 @@ function applyEvent(prev: SubTask[], ev: OrchestrationEvent): SubTask[] {
               actual_tokens: ev.actual_tokens,
               cost_eth: ev.cost_eth,
               output: ev.output,
+              nanopayments: ev.nanopayments,
             }
           : st,
       );

@@ -5,9 +5,10 @@ import { decompose } from "@/lib/orchestrator";
 import { classify } from "@/lib/classifier";
 import { selectAgent, tierToModel } from "@/lib/router";
 import { runSubagent } from "@/lib/executor";
-import { computeSavings, taskPriceEth } from "@/lib/pricing";
+import { computeSavings, sumSettledUsdc, taskPriceEth } from "@/lib/pricing";
+import { pickToolForSubtask } from "@/lib/tool-catalog";
 import { ApiError, jsonError, optionalTrimmedString, parseJsonBody, requireTrimmedString } from "@/lib/http";
-import type { OrchestrationEvent, OrchestrationRun, SubTask, Agent } from "@/lib/types";
+import type { NanoPayment, OrchestrationEvent, OrchestrationRun, SubTask, Agent, ToolCallSpec } from "@/lib/types";
 import { v4 as uuid } from "uuid";
 
 export const runtime = "nodejs";
@@ -70,6 +71,8 @@ export async function POST(req: Request) {
           total_actual_eth: 0,
           total_naive_eth: 0,
           saved_pct: 0,
+          total_usdc_settled: 0,
+          nanopayment_count: 0,
           status: "decomposing",
         };
         send({ type: "run_created", run });
@@ -88,6 +91,9 @@ export async function POST(req: Request) {
         run.subtasks = subtasks;
         send({ type: "decomposed", subtasks });
 
+        // Per-subtask tool selection. Done sequentially so the dashboard sees
+        // classify → assign → tool_selected events grouped per subtask.
+        const toolPlans: Array<ReturnType<typeof pickToolForSubtask> | null> = [];
         for (let i = 0; i < subtasks.length; i++) {
           const st = subtasks[i];
           const classification = await classify(st.description, decomposed[i].skill_hint);
@@ -105,20 +111,43 @@ export async function POST(req: Request) {
           const agent = selectAgent(agentPool, st.tier, decomposed[i].skill_hint);
           st.agent_id = agent.id;
           send({ type: "agent_assigned", subtask_id: st.id, agent_id: agent.id });
+
+          const plan = pickToolForSubtask(st.description, decomposed[i].skill_hint);
+          toolPlans.push(plan);
+          if (plan) {
+            const spec: ToolCallSpec = plan.spec;
+            st.tool_used = spec;
+            send({ type: "tool_selected", subtask_id: st.id, tool: spec });
+          }
         }
 
+        const allPayments: NanoPayment[] = [];
+
         await Promise.all(
-          subtasks.map(async (st) => {
+          subtasks.map(async (st, i) => {
             send({ type: "task_started", subtask_id: st.id });
             st.status = "working";
             const agent = agentPool.find((a) => a.id === st.agent_id);
             if (!agent) throw new Error(`agent ${st.agent_id} not found`);
+            const plan = toolPlans[i];
             try {
               const result = await runSubagent(
                 agent,
                 st.model,
                 st.tier,
                 st.description,
+                {
+                  subtaskId: st.id,
+                  tool: plan
+                    ? { spec: plan.spec, request: plan.build() }
+                    : undefined,
+                  onPayment: (payment) => {
+                    // Stamp the real subtask id (the executor uses a fallback).
+                    const stamped: NanoPayment = { ...payment, subtask_id: st.id };
+                    allPayments.push(stamped);
+                    send({ type: "tool_payment", subtask_id: st.id, payment: stamped });
+                  },
+                },
               );
               st.actual_tokens = result.actual_tokens;
               st.cost_eth = taskPriceEth(
@@ -127,6 +156,7 @@ export async function POST(req: Request) {
                 agent.quality,
               );
               st.output = result.output;
+              st.nanopayments = result.nanopayments.map((p) => ({ ...p, subtask_id: st.id }));
               st.status = "done";
               send({
                 type: "task_completed",
@@ -134,6 +164,7 @@ export async function POST(req: Request) {
                 actual_tokens: result.actual_tokens,
                 cost_eth: st.cost_eth,
                 output: result.output,
+                nanopayments: st.nanopayments,
               });
             } catch (e) {
               st.status = "error";
@@ -148,9 +179,12 @@ export async function POST(req: Request) {
         );
 
         const totals = computeSavings(subtasks);
+        const totalUsdc = sumSettledUsdc(allPayments);
         run.total_actual_eth = totals.actual_eth;
         run.total_naive_eth = totals.naive_eth;
         run.saved_pct = totals.saved_pct;
+        run.total_usdc_settled = totalUsdc;
+        run.nanopayment_count = allPayments.length;
         run.status = "done";
         saveRun(run);
 
@@ -159,6 +193,8 @@ export async function POST(req: Request) {
           total_actual_eth: totals.actual_eth,
           total_naive_eth: totals.naive_eth,
           saved_pct: totals.saved_pct,
+          total_usdc_settled: totalUsdc,
+          nanopayment_count: allPayments.length,
         });
       } catch (e) {
         const message = e instanceof Error ? e.message : "orchestrate failed";

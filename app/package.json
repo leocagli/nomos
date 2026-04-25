@@ -11,13 +11,18 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.88.0",
+    "@circle-fin/developer-controlled-wallets": "^10.3.0",
+    "@circle-fin/w3s-pw-web-sdk": "^1.1.11",
     "@metamask/connect-evm": "^0.9.1",
     "@vercel/blob": "^2.3.3",
+    "@x402/evm": "^2.10.0",
+    "@x402/fetch": "^2.10.0",
     "framer-motion": "^12.38.0",
     "next": "16.2.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "viem": "^2.48.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

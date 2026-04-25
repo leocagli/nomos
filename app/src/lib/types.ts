@@ -72,6 +72,40 @@ export interface SubTask {
   output?: string;
   classification?: Classification;
   error?: string;
+  nanopayments?: NanoPayment[];
+  tool_used?: ToolCallSpec;
+}
+
+/**
+ * One Arc-settled USDC nanopayment for a paid AIsa /apis/v2/ call.
+ * Settlement runs through Circle Gateway via the x402 protocol.
+ */
+export interface NanoPayment {
+  id: string;
+  subtask_id: string;
+  endpoint: string;
+  endpoint_label: string;
+  cost_usdc: number;
+  latency_ms: number;
+  tx_hash?: string;
+  payer_address: string;
+  network: "arc-testnet";
+  settled_at: string;
+  status: "settled" | "failed" | "mocked";
+}
+
+/**
+ * A tool the agent can invoke before running the LLM step.
+ * Currently maps to a paid AIsa /apis/v2/ endpoint.
+ */
+export interface ToolCallSpec {
+  endpoint: string;
+  endpoint_label: string;
+  method: "GET" | "POST";
+  /** USD price per call from references/endpoint-catalog.md */
+  price_usdc: number;
+  /** Reasoning shown to the user — why this tool was picked */
+  reason: string;
 }
 
 export interface OrchestrationRun {
@@ -84,6 +118,8 @@ export interface OrchestrationRun {
   total_actual_eth: number;
   total_naive_eth: number;
   saved_pct: number;
+  total_usdc_settled: number;
+  nanopayment_count: number;
   status: "decomposing" | "routing" | "executing" | "done" | "error";
 }
 
@@ -92,10 +128,12 @@ export type OrchestrationEvent =
   | { type: "decomposed"; subtasks: SubTask[] }
   | { type: "classified"; subtask_id: string; classification: Classification; model: ModelId }
   | { type: "agent_assigned"; subtask_id: string; agent_id: string }
+  | { type: "tool_selected"; subtask_id: string; tool: ToolCallSpec }
   | { type: "task_started"; subtask_id: string }
-  | { type: "task_completed"; subtask_id: string; actual_tokens: number; cost_eth: number; output: string }
+  | { type: "tool_payment"; subtask_id: string; payment: NanoPayment }
+  | { type: "task_completed"; subtask_id: string; actual_tokens: number; cost_eth: number; output: string; nanopayments: NanoPayment[] }
   | { type: "task_failed"; subtask_id: string; error: string }
-  | { type: "run_completed"; total_actual_eth: number; total_naive_eth: number; saved_pct: number }
+  | { type: "run_completed"; total_actual_eth: number; total_naive_eth: number; saved_pct: number; total_usdc_settled: number; nanopayment_count: number }
   | { type: "error"; message: string };
 
 export interface Team {
