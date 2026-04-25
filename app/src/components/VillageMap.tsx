@@ -266,6 +266,8 @@ export function VillageMap() {
           font-family: 'Comic Sans MS', cursive;
           letter-spacing: 0.05em;
           animation: helpBubbleBounce 2s ease-in-out infinite;
+          margin-top: 64px;
+          margin-left: 89px;
         }
 
         .gnome-help-bubble::after {
@@ -296,8 +298,8 @@ export function VillageMap() {
           height: 100%;
           object-fit: contain;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-          margin-top: 96px;
-          margin-left: 104px;
+          margin-top: 177px;
+          margin-left: 220px;
           transition: transform 0.2s ease;
         }
 
