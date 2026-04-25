@@ -281,7 +281,7 @@ function BuildingHotspot({
       {/* Always visible label */}
       <div className={`building-label ${isHovered ? "hovered" : ""}`}>
         <span className="label-name">{building.name}</span>
-        <span className="label-route">-&gt; {building.href}</span>
+        <span className="label-desc">{building.description}</span>
       </div>
 
       {/* Pulse indicator */}
@@ -321,40 +321,70 @@ function BuildingHotspot({
 
         .building-label {
           position: absolute;
-          top: 50%;
+          bottom: calc(100% + 6px);
           left: 50%;
-          transform: translate(-50%, -50%);
+          transform: translateX(-50%);
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 2px;
-          padding: 8px 12px;
-          background: rgba(31, 31, 30, 0.9);
-          border: 2px solid var(--accent);
-          border-radius: 8px;
-          box-shadow: 0 0 12px var(--accent), 0 4px 8px rgba(0, 0, 0, 0.4);
+          gap: 1px;
+          padding: 6px 10px;
+          background: #2a1f0f;
+          border: 1.5px solid #6b4c1e;
+          border-radius: 4px;
+          box-shadow:
+            inset 0 1px 0 rgba(255,220,140,0.15),
+            0 3px 8px rgba(0,0,0,0.6),
+            0 1px 2px rgba(0,0,0,0.4);
           white-space: nowrap;
           z-index: 100;
-          transition: all 0.2s ease;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          /* Wooden plank look: subtle grain via background */
+          background-image: repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 3px,
+            rgba(255,255,255,0.015) 3px,
+            rgba(255,255,255,0.015) 6px
+          );
+        }
+
+        /* Small notch/nail effect on top */
+        .building-label::before {
+          content: "";
+          position: absolute;
+          top: -5px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 6px;
+          height: 6px;
+          background: #8b6914;
+          border-radius: 50%;
+          border: 1px solid #4a3508;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .building-label.hovered {
-          transform: translate(-50%, -50%) scale(1.1);
-          box-shadow: 0 0 20px var(--accent), 0 6px 12px rgba(0, 0, 0, 0.5);
+          transform: translateX(-50%) translateY(-2px);
+          box-shadow:
+            inset 0 1px 0 rgba(255,220,140,0.2),
+            0 6px 16px rgba(0,0,0,0.7),
+            0 2px 4px rgba(0,0,0,0.5);
         }
 
         .label-name {
           font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
-          font-size: 0.75rem;
-          font-weight: 600;
-          color: var(--cream);
+          font-size: 0.7rem;
+          font-weight: 700;
+          color: #f0d9a0;
+          letter-spacing: 0.02em;
         }
 
-        .label-route {
-          font-family: "JetBrains Mono", monospace;
-          font-size: 0.65rem;
-          color: var(--accent);
-          opacity: 0.9;
+        .label-desc {
+          font-size: 0.6rem;
+          color: #a08850;
+          font-style: italic;
+          letter-spacing: 0.01em;
         }
 
         .hotspot-pulse {
