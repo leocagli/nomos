@@ -54,12 +54,8 @@ export function NPC({ x, y, gnomeIndex }: NPCProps) {
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
-      {/* Gnome Icon */}
-      <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${gnome.color} shadow-lg flex items-center justify-center text-white font-bold text-sm transition-transform duration-300 hover:scale-110 hover:shadow-xl`}>
-        {gnomeIndex === 0 && '🌱'}
-        {gnomeIndex === 1 && '⚔️'}
-        {gnomeIndex === 2 && '🍳'}
-        {gnomeIndex === 3 && '✨'}
+      {/* Gnome Icon - Hidden */}
+      <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${gnome.color} shadow-lg flex items-center justify-center text-white font-bold text-sm transition-transform duration-300 hover:scale-110 hover:shadow-xl opacity-0 pointer-events-none`}>
       </div>
 
       {/* Tooltip */}

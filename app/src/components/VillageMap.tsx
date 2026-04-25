@@ -24,7 +24,7 @@ const BUILDINGS: Building[] = [
     name: "Plaza Central",
     description: "Marketplace",
     href: "/orchestrate",
-    position: { top: "38%", left: "40%", width: "20%", height: "18%" },
+    position: { top: "40%", left: "45%", width: "18%", height: "16%" },
     accentColor: "var(--terere)",
   },
   {
