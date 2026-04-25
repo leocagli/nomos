@@ -227,7 +227,7 @@ export function VillageMap() {
 
 /* ─────────────────────────────────────────────────────────────────────────────
    BuildingZoneHotspot Component - With dropdown for multiple options
-   ───────────────────────────────────────────────────────────────────────────── */
+   ─────��─────────────────────────────────────────────────────────────────────── */
 
 interface BuildingZoneHotspotProps {
   zone: BuildingZone;
@@ -244,6 +244,17 @@ function BuildingZoneHotspot({
 }: BuildingZoneHotspotProps) {
   const hasMultipleOptions = zone.options.length > 1;
   const singleOption = zone.options[0];
+
+  // Margin adjustments for each zone's sign-board
+  const signBoardMargins: { [key: string]: { marginTop: string; marginLeft: string } } = {
+    "left-mushroom": { marginTop: "-14px", marginLeft: "-49px" },     // Hongo Grande
+    "marketplace": { marginTop: "115px", marginLeft: "23px" },        // Plaza Central
+    "post-office": { marginTop: "10px", marginLeft: "18px" },         // Correos
+    "back-inn": { marginTop: "-3px", marginLeft: "-3px" },            // Inn (placeholder)
+    "right-tree": { marginTop: "-19px", marginLeft: "1px" },          // Arbol Biblioteca
+  };
+
+  const boardStyle = signBoardMargins[zone.id] || { marginTop: "0", marginLeft: "0" };
 
   const sharedStyles = `
     /* ── Wrapper posicionado sobre el mapa ── */
@@ -460,7 +471,7 @@ function BuildingZoneHotspot({
           aria-label={`${singleOption.name}: ${singleOption.description}`}
         >
           <div className="sign-rope" />
-          <div className="sign-board">
+          <div className="sign-board" style={boardStyle}>
             <span className="sign-title">{singleOption.name}</span>
             <span className="sign-sub">{singleOption.description}</span>
           </div>
@@ -494,7 +505,7 @@ function BuildingZoneHotspot({
         aria-label={`${zone.label} - ver lugares`}
       >
         <div className="sign-rope" />
-        <div className="sign-board">
+        <div className="sign-board" style={boardStyle}>
           <span className="sign-title">
             {zone.label}
             <span className={`sign-chevron ${isActive ? "open" : ""}`}>&#9660;</span>
