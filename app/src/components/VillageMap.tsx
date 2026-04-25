@@ -124,18 +124,6 @@ export function VillageMap() {
         <NPC x={92} y={55} gnomeIndex={3} /> {/* Wizard - Far right */}
       </div>
 
-      {/* Decorative gnome in top left corner */}
-      <div className="village-gnome">
-        <Image
-          src="/images/gnome.png"
-          alt="Decorative gnome"
-          width={150}
-          height={150}
-          style={{ objectFit: "contain", width: "100%", height: "100%" }}
-          priority
-        />
-      </div>
-
       {/* Floating clouds animation */}
       <div className="village-clouds" aria-hidden>
         <div className="cloud cloud-1" />
@@ -184,21 +172,6 @@ export function VillageMap() {
           position: absolute;
           inset: 0;
           z-index: 8;
-        }
-
-        .village-gnome {
-          position: absolute;
-          top: 15px;
-          left: 15px;
-          z-index: 50;
-          width: 150px;
-          height: 150px;
-          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-          pointer-events: none;
-          opacity: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
         }
 
         .village-clouds {
