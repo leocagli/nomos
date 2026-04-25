@@ -127,6 +127,7 @@ export function VillageMap() {
 
       {/* Gnome Inspector decoration near Plaza Central */}
       <div className="gnome-inspector" onClick={() => setGnomeOpen(!gnomeOpen)}>
+        <div className="gnome-help-bubble">Help!</div>
         <img
           src="/images/gnome-inspector.png"
           alt="Gnome Inspector - Click for FAQ"
@@ -238,6 +239,56 @@ export function VillageMap() {
           height: 100px;
           z-index: 15;
           pointer-events: auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .gnome-help-bubble {
+          position: absolute;
+          top: -35px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: #fff;
+          border: 3px solid #000;
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 900;
+          color: #000;
+          text-align: center;
+          box-shadow: 2px 2px 0px #000;
+          font-family: 'Comic Sans MS', cursive;
+          letter-spacing: 0.05em;
+          animation: helpBubbleBounce 2s ease-in-out infinite;
+        }
+
+        .gnome-help-bubble::after {
+          content: '';
+          position: absolute;
+          bottom: -12px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 0;
+          height: 0;
+          border-left: 8px solid transparent;
+          border-right: 0px solid transparent;
+          border-top: 12px solid #fff;
+          filter: drop-shadow(-1px 1px 0px #000);
+        }
+
+        @keyframes helpBubbleBounce {
+          0%, 100% {
+            transform: translateX(-50%) translateY(0);
+          }
+          50% {
+            transform: translateX(-50%) translateY(-8px);
+          }
         }
 
         .gnome-inspector img {
