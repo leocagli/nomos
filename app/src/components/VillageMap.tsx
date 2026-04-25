@@ -38,10 +38,10 @@ const BUILDING_ZONES: BuildingZone[] = [
     ],
   },
   {
-    // Balanza central - solo marketplace
+    // Balanza central - solo marketplace — bajada a la altura de la balanza
     id: "marketplace",
     label: "Plaza Central",
-    position: { top: "45%", left: "38%", width: "18%", height: "18%" },
+    position: { top: "52%", left: "38%", width: "18%", height: "14%" },
     accentColor: "var(--terere)",
     options: [
       { id: "marketplace", name: "Plaza Central", description: "Marketplace", href: "/orchestrate" },
@@ -245,12 +245,206 @@ function BuildingZoneHotspot({
   const hasMultipleOptions = zone.options.length > 1;
   const singleOption = zone.options[0];
 
-  // Si solo hay una opcion, es un link directo
+  const sharedStyles = `
+    /* ── Cartel de madera colgante ── */
+    .zone-sign {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 130px;
+      white-space: nowrap;
+      z-index: 100;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
+      transition: filter 0.2s ease, transform 0.2s ease;
+    }
+    /* Cuerda del cartel */
+    .zone-sign::before {
+      content: "";
+      display: block;
+      width: 2px;
+      height: 10px;
+      background: #5c3d11;
+      margin: 0 auto;
+      border-radius: 1px;
+    }
+    /* Tabla del cartel */
+    .sign-board {
+      background: #3b2710;
+      border: 2px solid #7a541e;
+      border-radius: 5px;
+      padding: 7px 12px 6px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,220,140,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.3),
+        0 2px 0 #1a0f04;
+      /* Veta de madera */
+      background-image: repeating-linear-gradient(
+        92deg,
+        transparent,
+        transparent 4px,
+        rgba(255,255,255,0.018) 4px,
+        rgba(255,255,255,0.018) 8px
+      );
+    }
+    .sign-title {
+      font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #f5e0a8;
+      letter-spacing: 0.03em;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .sign-sub {
+      font-size: 0.58rem;
+      color: #9a7840;
+      font-style: italic;
+      text-align: center;
+      margin-top: 2px;
+    }
+    /* Flecha del dropdown */
+    .sign-chevron {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 0.55rem;
+      color: #c8a55a;
+      vertical-align: middle;
+      transition: transform 0.2s ease;
+    }
+    .sign-chevron.open {
+      transform: rotate(180deg);
+    }
+
+    /* ── Zona invisible clicable ── */
+    .zone-hit {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      border-radius: 12px;
+      background: transparent;
+      border: none;
+      transition: none;
+    }
+    .zone-glow {
+      position: absolute;
+      inset: -6px;
+      border-radius: 18px;
+      background: var(--accent);
+      opacity: 0;
+      filter: blur(18px);
+      transition: opacity 0.25s ease;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .zone-hit:hover ~ .zone-sign .sign-board,
+    .zone-active .sign-board {
+      border-color: #c8953a;
+      box-shadow:
+        inset 0 1px 0 rgba(255,220,140,0.22),
+        inset 0 -1px 0 rgba(0,0,0,0.3),
+        0 2px 0 #1a0f04,
+        0 0 12px rgba(200,149,58,0.25);
+    }
+    .zone-hit:hover ~ .zone-glow,
+    .zone-active .zone-glow {
+      opacity: 0.35;
+    }
+
+    /* ── Dropdown panel ── */
+    .dropdown-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 150;
+    }
+    .dropdown-panel {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: #221508;
+      border: 2px solid #7a541e;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.85), 0 0 24px rgba(120,80,20,0.2);
+      animation: panel-in 0.15s ease-out;
+      min-width: 180px;
+    }
+    /* Header del panel */
+    .panel-header {
+      padding: 8px 14px 6px;
+      background: #2e1c0a;
+      border-bottom: 1px solid #4a3010;
+    }
+    .panel-header-text {
+      font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #9a7840;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    @keyframes panel-in {
+      from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    /* Items del dropdown */
+    .panel-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      text-decoration: none;
+      border-bottom: 1px solid #2e1c0a;
+      transition: background 0.12s ease;
+    }
+    .panel-item:last-child {
+      border-bottom: none;
+    }
+    .panel-item:hover {
+      background: #3a2010;
+    }
+    .panel-item-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #7a541e;
+      flex-shrink: 0;
+      transition: background 0.12s ease;
+    }
+    .panel-item:hover .panel-item-dot {
+      background: #c8953a;
+    }
+    .panel-item-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .item-name {
+      font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #f0d9a0;
+      line-height: 1.2;
+    }
+    .item-desc {
+      font-size: 0.62rem;
+      color: #9a7840;
+    }
+  `;
+
+  // Zona con UNA sola opcion: link directo
   if (!hasMultipleOptions) {
     return (
-      <Link
-        href={singleOption.href}
-        className="building-zone"
+      <div
+        className="zone-wrapper"
         style={{
           position: "absolute",
           top: zone.position.top,
@@ -258,89 +452,30 @@ function BuildingZoneHotspot({
           width: zone.position.width,
           height: zone.position.height,
           ["--accent" as string]: zone.accentColor,
+          zIndex: 10,
         }}
-        aria-label={`${singleOption.name}: ${singleOption.description}`}
       >
+        <Link
+          href={singleOption.href}
+          className="zone-hit"
+          aria-label={`${singleOption.name}: ${singleOption.description}`}
+        />
         <div className="zone-glow" />
-        <div className="zone-label">
-          <span className="label-name">{singleOption.name}</span>
-          <span className="label-desc">{singleOption.description}</span>
+        <div className="zone-sign">
+          <div className="sign-board">
+            <span className="sign-title">{singleOption.name}</span>
+            <span className="sign-sub">{singleOption.description}</span>
+          </div>
         </div>
-        <style jsx>{`
-          .building-zone {
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            cursor: pointer;
-            border-radius: 16px;
-            transition: transform 0.2s ease;
-            text-decoration: none;
-          }
-          .building-zone:hover {
-            transform: scale(1.02);
-          }
-          .zone-glow {
-            position: absolute;
-            inset: -4px;
-            border-radius: 20px;
-            background: var(--accent);
-            opacity: 0;
-            filter: blur(16px);
-            transition: opacity 0.3s ease;
-            z-index: -1;
-          }
-          .building-zone:hover .zone-glow {
-            opacity: 0.4;
-          }
-          .zone-label {
-            position: absolute;
-            bottom: calc(100% + 6px);
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1px;
-            padding: 6px 10px;
-            background: #2a1f0f;
-            border: 1.5px solid #6b4c1e;
-            border-radius: 4px;
-            box-shadow: inset 0 1px 0 rgba(255,220,140,0.15), 0 3px 8px rgba(0,0,0,0.6);
-            white-space: nowrap;
-            z-index: 100;
-          }
-          .zone-label::before {
-            content: "";
-            position: absolute;
-            top: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            background: #8b6914;
-            border-radius: 50%;
-            border: 1px solid #4a3508;
-          }
-          .label-name {
-            font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #f0d9a0;
-          }
-          .label-desc {
-            font-size: 0.6rem;
-            color: #a08850;
-            font-style: italic;
-          }
-        `}</style>
-      </Link>
+        <style jsx>{sharedStyles}</style>
+      </div>
     );
   }
 
-  // Si hay multiples opciones, muestra dropdown
+  // Zona con MULTIPLES opciones: dropdown
   return (
     <div
-      className={`building-zone-multi ${isActive ? "active" : ""}`}
+      className={`zone-wrapper ${isActive ? "zone-active" : ""}`}
       style={{
         position: "absolute",
         top: zone.position.top,
@@ -348,182 +483,52 @@ function BuildingZoneHotspot({
         width: zone.position.width,
         height: zone.position.height,
         ["--accent" as string]: zone.accentColor,
+        zIndex: isActive ? 200 : 10,
       }}
     >
       <button
-        className="zone-trigger"
+        className="zone-hit"
         onClick={onActivate}
         aria-expanded={isActive}
-        aria-label={`${zone.label} - Click to see options`}
-      >
-        <div className="zone-glow" />
-        <div className="zone-label">
-          <span className="label-name">{zone.label}</span>
-          <span className="label-desc">{zone.options.length} lugares</span>
-          <span className="label-arrow">{isActive ? "^" : "v"}</span>
+        aria-label={`${zone.label} - ver lugares`}
+      />
+      <div className="zone-glow" />
+      <div className="zone-sign">
+        <div className="sign-board">
+          <span className="sign-title">
+            {zone.label}
+            <span className={`sign-chevron ${isActive ? "open" : ""}`}>&#9660;</span>
+          </span>
+          <span className="sign-sub">{zone.options.length} lugares</span>
         </div>
-      </button>
 
-      {/* Dropdown menu */}
-      {isActive && (
-        <>
-          <div className="dropdown-backdrop" onClick={onClose} />
-          <div className="dropdown-menu">
-            {zone.options.map((option) => (
-              <Link
-                key={option.id}
-                href={option.href}
-                className="dropdown-item"
-                onClick={onClose}
-              >
-                <span className="item-name">{option.name}</span>
-                <span className="item-desc">{option.description}</span>
-              </Link>
-            ))}
-          </div>
-        </>
-      )}
+        {isActive && (
+          <>
+            <div className="dropdown-backdrop" onClick={onClose} />
+            <div className="dropdown-panel">
+              <div className="panel-header">
+                <span className="panel-header-text">{zone.label}</span>
+              </div>
+              {zone.options.map((option) => (
+                <Link
+                  key={option.id}
+                  href={option.href}
+                  className="panel-item"
+                  onClick={onClose}
+                >
+                  <div className="panel-item-dot" />
+                  <div className="panel-item-text">
+                    <span className="item-name">{option.name}</span>
+                    <span className="item-desc">{option.description}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
 
-      <style jsx>{`
-        .building-zone-multi {
-          z-index: 10;
-        }
-        .building-zone-multi.active {
-          z-index: 200;
-        }
-        .zone-trigger {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          align-items: flex-start;
-          justify-content: center;
-          cursor: pointer;
-          border-radius: 16px;
-          background: transparent;
-          border: none;
-          transition: transform 0.2s ease;
-        }
-        .zone-trigger:hover {
-          transform: scale(1.02);
-        }
-        .zone-glow {
-          position: absolute;
-          inset: -4px;
-          border-radius: 20px;
-          background: var(--accent);
-          opacity: 0;
-          filter: blur(16px);
-          transition: opacity 0.3s ease;
-          z-index: -1;
-        }
-        .zone-trigger:hover .zone-glow,
-        .building-zone-multi.active .zone-glow {
-          opacity: 0.5;
-        }
-        .zone-label {
-          position: absolute;
-          bottom: calc(100% + 6px);
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1px;
-          padding: 6px 10px;
-          background: #2a1f0f;
-          border: 1.5px solid #6b4c1e;
-          border-radius: 4px;
-          box-shadow: inset 0 1px 0 rgba(255,220,140,0.15), 0 3px 8px rgba(0,0,0,0.6);
-          white-space: nowrap;
-          z-index: 100;
-        }
-        .zone-label::before {
-          content: "";
-          position: absolute;
-          top: -5px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 6px;
-          height: 6px;
-          background: #8b6914;
-          border-radius: 50%;
-          border: 1px solid #4a3508;
-        }
-        .label-name {
-          font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
-          font-size: 0.7rem;
-          font-weight: 700;
-          color: #f0d9a0;
-        }
-        .label-desc {
-          font-size: 0.6rem;
-          color: #a08850;
-          font-style: italic;
-        }
-        .label-arrow {
-          font-size: 0.6rem;
-          color: #f0d9a0;
-          margin-top: 2px;
-        }
-        .dropdown-backdrop {
-          position: fixed;
-          inset: 0;
-          z-index: 150;
-        }
-        .dropdown-menu {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-          padding: 8px;
-          background: #1f1a0f;
-          border: 2px solid #6b4c1e;
-          border-radius: 8px;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.8), 0 0 20px rgba(107,76,30,0.3);
-          z-index: 200;
-          min-width: 180px;
-          animation: dropdown-in 0.15s ease-out;
-        }
-        @keyframes dropdown-in {
-          from {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.95);
-          }
-          to {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-          }
-        }
-        .dropdown-item {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          padding: 10px 12px;
-          background: #2a1f0f;
-          border: 1px solid #4a3508;
-          border-radius: 4px;
-          text-decoration: none;
-          transition: background 0.15s ease, border-color 0.15s ease;
-        }
-        .dropdown-item:hover {
-          background: #3a2f1a;
-          border-color: #8b6914;
-        }
-        .item-name {
-          font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #f0d9a0;
-        }
-        .item-desc {
-          font-size: 0.65rem;
-          color: #a08850;
-          font-style: italic;
-        }
-      `}</style>
+      <style jsx>{sharedStyles}</style>
     </div>
   );
 }
