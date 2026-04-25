@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { NPC } from "./NPC";
@@ -244,6 +244,13 @@ function BuildingZoneHotspot({
 }: BuildingZoneHotspotProps) {
   const hasMultipleOptions = zone.options.length > 1;
   const singleOption = zone.options[0];
+  const [buttonRect, setButtonRect] = React.useState<DOMRect | null>(null);
+
+  const handleButtonRef = (el: HTMLButtonElement | HTMLAnchorElement) => {
+    if (el) {
+      setButtonRect(el.getBoundingClientRect());
+    }
+  };
 
   const sharedStyles = `
     /* ── Wrapper posicionado sobre el mapa ── */
@@ -363,10 +370,7 @@ function BuildingZoneHotspot({
       z-index: 150;
     }
     .dropdown-panel {
-      position: absolute;
-      top: calc(100% + 6px);
-      left: 50%;
-      transform: translateX(-50%);
+      position: fixed;
       z-index: 300;
       display: flex;
       flex-direction: column;
@@ -488,6 +492,7 @@ function BuildingZoneHotspot({
       }}
     >
       <button
+        ref={handleButtonRef as any}
         className="sign-button"
         onClick={onActivate}
         aria-expanded={isActive}
@@ -502,10 +507,17 @@ function BuildingZoneHotspot({
           <span className="sign-sub">{zone.options.length} lugares</span>
         </div>
 
-        {isActive && (
+        {isActive && buttonRect && (
           <>
             <div className="dropdown-backdrop" onClick={(e) => { e.stopPropagation(); onClose(); }} />
-            <div className="dropdown-panel">
+            <div 
+              className="dropdown-panel"
+              style={{
+                top: `${buttonRect.bottom + 8}px`,
+                left: `${buttonRect.left + buttonRect.width / 2}px`,
+                transform: "translateX(-50%)",
+              }}
+            >
               <div className="panel-header">
                 <span className="panel-header-text">{zone.label}</span>
               </div>
