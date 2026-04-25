@@ -139,8 +139,14 @@ export function VillageMap() {
         <div className="gnome-faq-overlay" onClick={() => setGnomeOpen(false)}>
           <div className="gnome-faq-chat" onClick={(e) => e.stopPropagation()}>
             <div className="faq-header">
-              <h3>Gnome Inspector - FAQ</h3>
-              <button 
+              <div className="faq-header-inner">
+                <img src="/images/gnome-inspector.png" alt="" className="faq-gnome-icon" />
+                <div>
+                  <p className="faq-subtitle">VILLAGE GUIDE</p>
+                  <h3>The Inspector Speaks</h3>
+                </div>
+              </div>
+              <button
                 className="faq-close"
                 onClick={() => setGnomeOpen(false)}
                 aria-label="Close FAQ"
@@ -150,21 +156,24 @@ export function VillageMap() {
             </div>
             <div className="faq-content">
               <div className="faq-item">
-                <p className="faq-question">¿Qué es NOMOS?</p>
-                <p className="faq-answer">NOMOS es una plataforma para orquestar agentes de IA y coordinar equipos.</p>
+                <p className="faq-question">What is NOMOS?</p>
+                <p className="faq-answer">NOMOS is a platform for orchestrating AI agents and coordinating optimized teams for any task.</p>
               </div>
               <div className="faq-item">
-                <p className="faq-question">¿Cómo empiezo?</p>
-                <p className="faq-answer">Puedes registrarte en el Árbol Biblioteca o explorar la Plaza Central.</p>
+                <p className="faq-question">How do I get started?</p>
+                <p className="faq-answer">Head to the Great Mushroom to browse missions, or explore Central Plaza to find agents in the Marketplace.</p>
               </div>
               <div className="faq-item">
-                <p className="faq-question">¿Qué puedo hacer en cada zona?</p>
-                <p className="faq-answer">Hongo Grande: Misiones y Workshop. Plaza Central: Marketplace. Árbol Biblioteca: Registro y Guild Hall.</p>
+                <p className="faq-question">What can I do in each zone?</p>
+                <p className="faq-answer">Great Mushroom: Missions & Workshop. Central Plaza: Marketplace. Library Tree: Registry & Guild Hall. Inn: Team HQ.</p>
               </div>
               <div className="faq-item">
-                <p className="faq-question">¿Necesito ayuda adicional?</p>
-                <p className="faq-answer">Explora cada edificio clickeando en sus carteles para más información.</p>
+                <p className="faq-question">Need more help?</p>
+                <p className="faq-answer">Click any sign board on the map to explore each building and discover what awaits inside.</p>
               </div>
+            </div>
+            <div className="faq-footer">
+              <span>Click anywhere outside to close</span>
             </div>
           </div>
         </div>
@@ -249,93 +258,150 @@ export function VillageMap() {
         .gnome-faq-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(0, 0, 0, 0.6);
+          background: rgba(0, 0, 0, 0.75);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 200;
-          backdrop-filter: blur(2px);
+          backdrop-filter: blur(3px);
         }
 
         .gnome-faq-chat {
-          background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-          border: 2px solid #5c3d11;
-          border-radius: 12px;
+          background: #1c1209;
+          border: 3px solid #7a5020;
+          border-radius: 4px;
           width: 90%;
-          max-width: 420px;
-          max-height: 500px;
+          max-width: 400px;
+          max-height: 560px;
           display: flex;
           flex-direction: column;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          box-shadow:
+            0 0 0 1px #3d2810,
+            0 0 0 5px #1c1209,
+            0 0 0 6px #7a5020,
+            0 24px 60px rgba(0, 0, 0, 0.9);
         }
 
         .faq-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 16px 20px;
-          border-bottom: 1px solid #5c3d11;
-          background: rgba(92, 61, 17, 0.2);
+          padding: 14px 18px;
+          border-bottom: 2px solid #3d2810;
+          background: linear-gradient(180deg, #3d2810 0%, #2a1c0a 100%);
+        }
+
+        .faq-header-inner {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .faq-gnome-icon {
+          width: 44px;
+          height: 44px;
+          object-fit: contain;
+          filter: invert(1);
+          opacity: 0.9;
+        }
+
+        .faq-subtitle {
+          margin: 0 0 2px 0;
+          color: #7a5020;
+          font-size: 9px;
+          font-weight: 700;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
         }
 
         .faq-header h3 {
           margin: 0;
-          color: #f0e6d2;
-          font-size: 18px;
-          font-weight: 600;
+          color: #f0d99a;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
           font-family: 'Geist', sans-serif;
         }
 
         .faq-close {
           background: none;
-          border: none;
-          color: #f0e6d2;
-          font-size: 24px;
+          border: 1px solid #3d2810;
+          color: #a07840;
+          font-size: 14px;
           cursor: pointer;
           padding: 0;
-          width: 32px;
-          height: 32px;
+          width: 28px;
+          height: 28px;
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 6px;
-          transition: background 0.2s ease;
+          border-radius: 2px;
+          transition: all 0.15s ease;
+          flex-shrink: 0;
         }
 
         .faq-close:hover {
-          background: rgba(240, 230, 210, 0.1);
+          background: rgba(122, 80, 32, 0.3);
+          color: #f0d99a;
+          border-color: #7a5020;
         }
 
         .faq-content {
           overflow-y: auto;
-          padding: 16px;
+          padding: 14px;
           flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
         }
 
         .faq-item {
-          margin-bottom: 16px;
-          padding: 12px;
-          background: rgba(92, 61, 17, 0.15);
-          border-radius: 8px;
-          border-left: 3px solid #5c3d11;
+          padding: 11px 14px;
+          background: rgba(61, 40, 16, 0.35);
+          border: 1px solid #3d2810;
+          border-radius: 2px;
+          position: relative;
         }
 
-        .faq-item:last-child {
-          margin-bottom: 0;
+        .faq-item::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 3px;
+          background: linear-gradient(180deg, #d4af37, #7a5020);
+          border-radius: 2px 0 0 2px;
         }
 
         .faq-question {
-          margin: 0 0 8px 0;
-          color: #d4af37;
-          font-weight: 600;
-          font-size: 14px;
+          margin: 0 0 6px 0;
+          color: #f0d99a;
+          font-weight: 700;
+          font-size: 12px;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
         }
 
         .faq-answer {
           margin: 0;
-          color: #c9b8a3;
-          font-size: 13px;
-          line-height: 1.5;
+          color: #b09070;
+          font-size: 12px;
+          line-height: 1.6;
+        }
+
+        .faq-footer {
+          padding: 8px 18px;
+          border-top: 1px solid #3d2810;
+          background: rgba(0, 0, 0, 0.3);
+          text-align: center;
+        }
+
+        .faq-footer span {
+          color: #4a3820;
+          font-size: 10px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
         }
 
         .village-clouds {
