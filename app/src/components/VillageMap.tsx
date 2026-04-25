@@ -58,6 +58,16 @@ const BUILDING_ZONES: BuildingZone[] = [
     ],
   },
   {
+    // Inn - al costado del hongo central
+    id: "back-inn",
+    label: "Inn",
+    position: { top: "28%", left: "53%", width: "14%", height: "16%" },
+    accentColor: "var(--pink)",
+    options: [
+      { id: "inn", name: "Inn", description: "Team headquarters", href: "/orchestrate" },
+    ],
+  },
+  {
     // Arbol biblioteca derecha - agrupa 2 edificios
     id: "right-tree",
     label: "Arbol Biblioteca",
@@ -523,7 +533,7 @@ function BuildingZoneHotspot({
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
+/* ────────────────────────────────��────────────────────────────────────────────
    Village HUD - Bottom status bar
    ───────────────────────────────────────────────────────────────────────────── */
 
