@@ -34,7 +34,7 @@ const BUILDING_ZONES: BuildingZone[] = [
     options: [
       { id: "mission-center", name: "Casa-Hongo Grande", description: "Mission Center", href: "/orchestrate" },
       { id: "workshop", name: "Workshop", description: "Squad tools & forge", href: "/squads/code-forge" },
-      { id: "immigration", name: "Oficina Inmigratos", description: "Register & paperwork", href: "/inbox" },
+      { id: "immigration", name: "Oficina de Inmigraciones", description: "Register & paperwork", href: "/inbox" },
     ],
   },
   {
@@ -276,7 +276,7 @@ function BuildingZoneHotspot({
       background: #3b2710;
       border: 2px solid #7a541e;
       border-radius: 5px;
-      padding: 7px 12px 6px;
+      padding: 8px 10px 8px;
       box-shadow:
         inset 0 1px 0 rgba(255,220,140,0.12),
         inset 0 -1px 0 rgba(0,0,0,0.3),
@@ -289,6 +289,9 @@ function BuildingZoneHotspot({
         rgba(255,255,255,0.018) 4px,
         rgba(255,255,255,0.018) 8px
       );
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
     }
     .sign-title {
       font-family: "Gordon Rounded", "Space Grotesk", sans-serif;
@@ -296,7 +299,7 @@ function BuildingZoneHotspot({
       font-weight: 700;
       color: #f5e0a8;
       letter-spacing: 0.03em;
-      line-height: 1.2;
+      line-height: 1.3;
       text-align: center;
     }
     .sign-sub {
@@ -304,7 +307,7 @@ function BuildingZoneHotspot({
       color: #9a7840;
       font-style: italic;
       text-align: center;
-      margin-top: 2px;
+      line-height: 1.2;
     }
     /* Flecha del dropdown */
     .sign-chevron {
