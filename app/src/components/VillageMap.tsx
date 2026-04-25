@@ -129,9 +129,10 @@ export function VillageMap() {
         <Image
           src="/images/gnome.png"
           alt="Decorative gnome"
-          width={120}
-          height={120}
-          style={{ objectFit: "contain" }}
+          width={150}
+          height={150}
+          style={{ objectFit: "contain", width: "100%", height: "100%" }}
+          priority
         />
       </div>
 
@@ -187,13 +188,17 @@ export function VillageMap() {
 
         .village-gnome {
           position: absolute;
-          top: 8px;
-          left: 12px;
-          z-index: 12;
-          width: 120px;
-          height: 120px;
+          top: 15px;
+          left: 15px;
+          z-index: 50;
+          width: 150px;
+          height: 150px;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
           pointer-events: none;
+          opacity: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .village-clouds {
