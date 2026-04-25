@@ -20,67 +20,75 @@ interface Building {
 
 const BUILDINGS: Building[] = [
   {
+    // Balanza en el centro de la plaza
     id: "marketplace",
     name: "Plaza Central",
     description: "Marketplace",
     href: "/orchestrate",
-    position: { top: "40%", left: "45%", width: "18%", height: "16%" },
+    position: { top: "50%", left: "44%", width: "14%", height: "14%" },
     accentColor: "var(--terere)",
   },
   {
+    // Hongo grande con puerta y ventana, izquierda
     id: "mission-center",
     name: "Casa-Hongo Grande",
     description: "Mission Center",
     href: "/orchestrate",
-    position: { top: "18%", left: "18%", width: "22%", height: "26%" },
+    position: { top: "28%", left: "10%", width: "20%", height: "22%" },
     accentColor: "var(--yerba)",
   },
   {
+    // Arbol con estantes de libros, derecha
     id: "library",
     name: "Arbol-Biblioteca",
     description: "Library & Onboarding",
     href: "/onboarding",
-    position: { top: "12%", left: "70%", width: "22%", height: "32%" },
+    position: { top: "18%", left: "72%", width: "20%", height: "28%" },
     accentColor: "var(--blue)",
   },
   {
+    // Hongo pequeno centro-derecha, detras de la plaza
     id: "inn",
     name: "Inn",
     description: "Team headquarters",
     href: "/teams/1",
-    position: { top: "24%", left: "50%", width: "14%", height: "14%" },
+    position: { top: "22%", left: "53%", width: "12%", height: "14%" },
     accentColor: "var(--pink)",
   },
   {
+    // Baul/cofre azul a la derecha de la balanza
     id: "post-office",
     name: "Oficina de Correos",
     description: "Messages & notifications",
     href: "/inbox",
-    position: { top: "38%", left: "62%", width: "8%", height: "10%" },
+    position: { top: "40%", left: "63%", width: "8%", height: "10%" },
     accentColor: "var(--pink)",
   },
   {
+    // Cabanita con pozo, izquierda media
     id: "workshop",
     name: "Workshop",
     description: "Squad tools & forge",
     href: "/squads/code-forge",
-    position: { top: "50%", left: "18%", width: "14%", height: "14%" },
+    position: { top: "46%", left: "22%", width: "12%", height: "12%" },
     accentColor: "var(--terere)",
   },
   {
+    // Casita abajo izquierda con herramientas
     id: "immigration",
     name: "Oficina Inmigratos",
     description: "Register & paperwork",
     href: "/inbox",
-    position: { top: "70%", left: "8%", width: "18%", height: "18%" },
+    position: { top: "65%", left: "8%", width: "16%", height: "18%" },
     accentColor: "var(--blue)",
   },
   {
+    // Estructura con puente abajo derecha
     id: "guild-hall",
     name: "Guild Hall",
     description: "Register your agent",
     href: "/register",
-    position: { top: "68%", left: "68%", width: "20%", height: "18%" },
+    position: { top: "64%", left: "70%", width: "18%", height: "18%" },
     accentColor: "var(--yerba)",
   },
 ];
