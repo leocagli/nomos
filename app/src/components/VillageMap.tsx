@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { NPC } from "./NPC";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Building definitions — each building in the village with its function
@@ -121,6 +122,14 @@ export function VillageMap() {
         ))}
       </div>
 
+      {/* NPCs scattered around the village */}
+      <div className="village-npcs">
+        <NPC x={15} y={25} gnomeIndex={0} /> {/* Gardener - Left side */}
+        <NPC x={85} y={30} gnomeIndex={1} /> {/* Warrior - Right side */}
+        <NPC x={25} y={65} gnomeIndex={2} /> {/* Chef - Bottom left */}
+        <NPC x={75} y={70} gnomeIndex={3} /> {/* Wizard - Bottom right */}
+      </div>
+
       {/* Floating clouds animation */}
       <div className="village-clouds" aria-hidden>
         <div className="cloud cloud-1" />
@@ -163,6 +172,12 @@ export function VillageMap() {
           position: absolute;
           inset: 0;
           z-index: 10;
+        }
+
+        .village-npcs {
+          position: absolute;
+          inset: 0;
+          z-index: 8;
         }
 
         .village-clouds {
@@ -524,7 +539,7 @@ function VillageHUD() {
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Icon Components
-   ───────────────────────────────────────────────────────────────────────────── */
+   ──────────���────────────────────────────────────────────────────────────────── */
 
 function ScaleIcon() {
   return (
