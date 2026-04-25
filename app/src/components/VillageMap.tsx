@@ -259,11 +259,10 @@ function BuildingZoneHotspot({
   // Link-specific styles for Correos to reduce clickable area overlap
   const linkStyle: React.CSSProperties = zone.id === "post-office" 
     ? { 
-        width: "120px", 
-        height: "70px", 
+        width: "auto", 
+        height: "auto", 
         marginRight: "10px", 
-        paddingLeft: "0px", 
-        overflow: "hidden",
+        paddingLeft: "0px",
         letterSpacing: "0.004em", 
         lineHeight: "0.5em"
       }
