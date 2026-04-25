@@ -20,85 +20,68 @@ interface Building {
 
 const BUILDINGS: Building[] = [
   {
-    // Cartel "Gremio de Pioneros" — hongo grande izquierda, puerta arqueada
-    id: "gremio",
-    name: "Gremio de Pioneros",
-    description: "Pioneer guild & squads",
-    href: "/squads/code-forge",
-    position: { top: "30%", left: "5%", width: "22%", height: "24%" },
+    id: "marketplace",
+    name: "Plaza Central",
+    description: "Marketplace",
+    href: "/orchestrate",
+    position: { top: "40%", left: "45%", width: "18%", height: "16%" },
+    accentColor: "var(--terere)",
+  },
+  {
+    id: "mission-center",
+    name: "Casa-Hongo Grande",
+    description: "Mission Center",
+    href: "/orchestrate",
+    position: { top: "18%", left: "18%", width: "22%", height: "26%" },
     accentColor: "var(--yerba)",
   },
   {
-    // Cartel "Guild Hall" — hongo central con escudo y banderas de espadas
+    id: "library",
+    name: "Arbol-Biblioteca",
+    description: "Library & Onboarding",
+    href: "/onboarding",
+    position: { top: "12%", left: "70%", width: "22%", height: "32%" },
+    accentColor: "var(--blue)",
+  },
+  {
+    id: "inn",
+    name: "Inn",
+    description: "Team headquarters",
+    href: "/teams/1",
+    position: { top: "24%", left: "50%", width: "14%", height: "14%" },
+    accentColor: "var(--pink)",
+  },
+  {
+    id: "post-office",
+    name: "Oficina de Correos",
+    description: "Messages & notifications",
+    href: "/inbox",
+    position: { top: "38%", left: "62%", width: "8%", height: "10%" },
+    accentColor: "var(--pink)",
+  },
+  {
+    id: "workshop",
+    name: "Workshop",
+    description: "Squad tools & forge",
+    href: "/squads/code-forge",
+    position: { top: "50%", left: "18%", width: "14%", height: "14%" },
+    accentColor: "var(--terere)",
+  },
+  {
+    id: "immigration",
+    name: "Oficina Inmigratos",
+    description: "Register & paperwork",
+    href: "/inbox",
+    position: { top: "70%", left: "8%", width: "18%", height: "18%" },
+    accentColor: "var(--blue)",
+  },
+  {
     id: "guild-hall",
     name: "Guild Hall",
     description: "Register your agent",
     href: "/register",
-    position: { top: "18%", left: "34%", width: "16%", height: "20%" },
-    accentColor: "var(--terere)",
-  },
-  {
-    // Cartel "Biblioteca Archivo del Conocimiento" — centro-derecha
-    id: "library",
-    name: "Biblioteca",
-    description: "Archivo del Conocimiento",
-    href: "/onboarding",
-    position: { top: "22%", left: "57%", width: "18%", height: "18%" },
-    accentColor: "var(--blue)",
-  },
-  {
-    // Cartel "INN" — arbol tronco derecha con ventana y cerveza
-    id: "inn",
-    name: "INN",
-    description: "La Posada del Hongo Amigo",
-    href: "/teams/1",
-    position: { top: "20%", left: "80%", width: "16%", height: "22%" },
-    accentColor: "var(--pink)",
-  },
-  {
-    // Cartel "Puesto de Guardia" — hongo pequeno central con puerta
-    id: "puesto-guardia",
-    name: "Puesto de Guardia",
-    description: "Mission operations",
-    href: "/orchestrate",
-    position: { top: "32%", left: "44%", width: "12%", height: "16%" },
-    accentColor: "var(--terere)",
-  },
-  {
-    // Cartel "Mercado Central" — la balanza, corazon de la plaza
-    id: "marketplace",
-    name: "Mercado Central",
-    description: "Marketplace",
-    href: "/orchestrate",
-    position: { top: "44%", left: "33%", width: "14%", height: "14%" },
-    accentColor: "var(--terere)",
-  },
-  {
-    // Cartel "Correos" — buzon/caja de correos centro-derecha de la plaza
-    id: "correos",
-    name: "Correos",
-    description: "Messages & notifications",
-    href: "/inbox",
-    position: { top: "44%", left: "54%", width: "10%", height: "12%" },
-    accentColor: "var(--pink)",
-  },
-  {
-    // Cartel "Forja y Taller del Rio" — area de forja abajo izquierda
-    id: "forja",
-    name: "Forja y Taller del Rio",
-    description: "Craft & build tools",
-    href: "/squads/code-forge",
-    position: { top: "60%", left: "22%", width: "16%", height: "14%" },
-    accentColor: "var(--terere)",
-  },
-  {
-    // Cartel "Suministros de Caza y Pesca" — abajo derecha junto al puente
-    id: "suministros",
-    name: "Suministros",
-    description: "Caza y Pesca",
-    href: "/inbox",
-    position: { top: "60%", left: "72%", width: "16%", height: "14%" },
-    accentColor: "var(--blue)",
+    position: { top: "68%", left: "68%", width: "20%", height: "18%" },
+    accentColor: "var(--yerba)",
   },
 ];
 
