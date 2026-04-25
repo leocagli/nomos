@@ -227,7 +227,7 @@ export function VillageMap() {
 
 /* ─────────────────────────────────────────────────────────────────────────────
    BuildingZoneHotspot Component - With dropdown for multiple options
-   ─────��─────────────────────────────────────────────────────────────────────── */
+   ─────���─────────────────────────────────────────────────────────────────────── */
 
 interface BuildingZoneHotspotProps {
   zone: BuildingZone;
@@ -246,12 +246,12 @@ function BuildingZoneHotspot({
   const singleOption = zone.options[0];
 
   // Margin adjustments for each zone's sign-board
-  const signBoardMargins: { [key: string]: { marginTop: string; marginLeft: string } } = {
-    "left-mushroom": { marginTop: "-14px", marginLeft: "-49px" },     // Hongo Grande
+  const signBoardMargins: { [key: string]: { marginTop: string; marginLeft: string; paddingTop?: string } } = {
+    "left-mushroom": { marginTop: "1px", marginLeft: "70px" },        // Hongo Grande
     "marketplace": { marginTop: "115px", marginLeft: "23px" },        // Plaza Central
-    "post-office": { marginTop: "10px", marginLeft: "18px" },         // Correos
-    "back-inn": { marginTop: "-3px", marginLeft: "-3px" },            // Inn (placeholder)
-    "right-tree": { marginTop: "-19px", marginLeft: "1px" },          // Arbol Biblioteca
+    "post-office": { marginTop: "-13px", marginLeft: "18px" },        // Correos
+    "back-inn": { marginTop: "-3px", marginLeft: "-3px" },            // Inn
+    "right-tree": { marginTop: "-19px", marginLeft: "-93px" },        // Arbol Biblioteca
   };
 
   const boardStyle = signBoardMargins[zone.id] || { marginTop: "0", marginLeft: "0" };
