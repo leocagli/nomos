@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd app && npm run build",
+  "outputDirectory": "app/.next",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "@api_url"
+  }
+}
